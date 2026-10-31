@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Estética - Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ===== VISTA LOGIN ===== -->
+    <div class="login-container" id="loginView">
+        <div class="logo">
+            <h1>Clínica Estética</h1>
+            <p>Panel de Inicio</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" placeholder="Ingrese su nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="rut">RUT</label>
+                <input type="text" id="rut" placeholder="Ej: 12.345.678-9" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+            </div>
+            <button type="submit" class="btn-login">Ingresar</button>
+            <div class="error-msg" id="errorMsg"></div>
+        </form>
+    </div>
+
+    <!-- ===== PANEL PRINCIPAL ===== -->
+    <div class="panel" id="panelView">
+        <div class="panel-header">
+            <h2>Panel Clínica</h2>
+            <button class="btn-logout" id="btnLogout">Cerrar Sesión</button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="buscar">Buscar Cliente</button>
+            <button class="tab-btn" data-tab="nuevo">Ingresar Cliente Nuevo</button>
+        </div>
+
+        <!-- ===== PESTAÑA: BUSCAR CLIENTE ===== -->
+        <div class="tab-content active" id="tab-buscar">
+            <div class="form-group">
+                <label for="buscarRut">Ingrese RUT del cliente</label>
+                <input type="text" id="buscarRut" placeholder="Ej: 12.345.678-9">
+            </div>
+            <button class="btn-primary" id="btnBuscar">Buscar Cliente</button>
+            <div class="error-msg" id="errorBuscar"></div>
+            
+            <div id="contenedorFicha"></div>
+        </div>
+
+        <!-- ===== PESTAÑA: INGRESAR CLIENTE NUEVO ===== -->
+        <div class="tab-content" id="tab-nuevo">
+            <form id="formNuevo">
+                <h3>Datos Personales</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nNombre">Nombre Completo</label>
+                        <input type="text" id="nNombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nRut">RUT</label>
+                        <input type="text" id="nRut" placeholder="Ej: 11.222.333-4" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nEdad">Edad</label>
+                        <input type="number" id="nEdad" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nTelefono">Teléfono</label>
+                        <input type="text" id="nTelefono" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nEmail">Email</label>
+                    <input type="email" id="nEmail" required>
+                </div>
+                
+                <h3>Datos Cosmetológicos Base</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nPiel">Tipo de Piel Base</label>
+                        <select id="nPiel" required>
+                            <option value="Normal">Normal</option>
+                            <option value="Seca">Seca</option>
+                            <option value="Grasa">Grasa</option>
+                            <option value="Mixta">Mixta</option>
+                            <option value="Sensible">Sensible</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nAlergias">Alergias</label>
+                        <input type="text" id="nAlergias" placeholder="Ej: Ninguna, Látex, etc." required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Guardar Cliente</button>
+                <div class="success-msg" id="msgNuevo"></div>
+            </form>
+
+            <div class="listado">
+                <h3>Clientes Registrados</h3>
+                <div id="listaClientes" class="lista-clientes"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== VISTA: FICHA DE ATENCIÓN COMPLETA ===== -->
+    <div class="vista-ficha" id="vistaFichaCompleta">
+        <div class="ficha-papel">
+            <div class="ficha-header-print">
+                <div class="ficha-logo">ANESI <span>Beauté</span></div>
+                <div class="ficha-titulo">
+                    <h2>DIAGNÓSTICO FACIAL ANESI</h2>
+                    <p>Descubre la realidad de tu piel</p>
+                </div>
+                <div class="ficha-logo">ANESI <span>Beauté</span></div>
+            </div>
+
+            <form id="formDiagnosticoAnesi">
+                <input type="hidden" id="diagRut">
+                <input type="hidden" id="diagId"> <!-- NUEVO: Para saber si editamos -->
+                
+                <div class="seccion-ficha">
+                    <h4>DATOS DEL CLIENTE</h4>
+                    <div class="form-group-inline">
+                        <label>Nombre:</label>
+                        <input type="text" id="dNombre" readonly class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Fecha de Nacimiento:</label>
+                        <input type="date" id="dNacimiento" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Dirección:</label>
+                        <input type="text" id="dDireccion" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Tel:</label>
+                        <input type="text" id="dTelefono" readonly class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>E-Mail:</label>
+                        <input type="email" id="dEmail" readonly class="input-print">
+                    </div>
+                </div>
+
+                <div class="seccion-ficha">
+                    <h4>HÁBITOS DE BELLEZA (¿Qué cosméticos emplea?)</h4>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="hLimpieza"> Limpieza</label>
+                        <label><input type="checkbox" id="hMañana"> Mañana</label>
+                        <label><input type="checkbox" id="hNoche"> Noche</label>
+                        <label><input type="checkbox" id="hPuntuales"> Puntuales</label>
+                    </div>
+                    <div class="form-group-inline mt-10">
+                        <label>¿Qué tratamientos de instituto ha realizado?:</label>
+                        <input type="text" id="dTratamientosPrevios" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Frecuencia:</label>
+                        <input type="text" id="dFrecuencia" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>¿Cómo siente su piel?:</label>
+                        <input type="text" id="dSientePiel" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>¿Qué le preocupa de su piel?:</label>
+                        <input type="text" id="dPreocupacion" class="input-print">
+                    </div>
+                </div>
+
+                <div class="seccion-ficha">
+                    <h4>1º ESTUDIO: DIAGNÓSTICO DE LA PIEL ANTES DEL TRATAMIENTO</h4>
+                    <div class="grid-checkboxes">
+                        <div>
+                            <label><input type="checkbox" class="chk-diag" value="Normal"> Normal</label><br>
+                            <label><input type="checkbox" class="chk-diag" value="Grasa"> Grasa</label><br>
+                            <label><input type="checkbox" class="chk-diag" value="Seca"> Seca</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox" class="chk-diag" value="Deshidratada"> Deshidratada</label><br>
+                            <label><input type="checkbox" class="chk-diag" value="Mixta"> Mixta</label><br>
+                            <label><input type="checkbox" class="chk-diag" value="Acnéica"> Acnéica</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox" class="chk-diag" value="Sensible"> Sensible</label><br>
+                            <label><input type="checkbox" class="chk-diag" value="Couperosis"> Couperosis</label><br>
+                            <label><input type="checkbox" class="chk-diag" value="Dermatitis"> Dermatitis</label>
+                        </div>
+                    </div>
+
+                    <h5 class="mt-15">COMEDONES</h5>
+                    <div class="form-group-inline">
+                        <label>Tacto y grosor:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" class="chk-comedon" value="Fino"> Fino</label>
+                            <label><input type="checkbox" class="chk-comedon" value="Grueso"> Grueso</label>
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Líneas de expresión:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" class="chk-comedon" value="Ojos"> Ojos</label>
+                            <label><input type="checkbox" class="chk-comedon" value="Rostro"> Rostro</label>
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Manchas:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" class="chk-comedon" value="Oscuras"> Oscuras</label>
+                            <label><input type="checkbox" class="chk-comedon" value="Claras"> Claras</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seccion-ficha">
+                    <h4>CONSEJO PERSONALIZADO</h4>
+                    <div class="form-group-inline">
+                        <label>Tratamiento en Cabina:</label>
+                        <textarea id="dTratamientoCabina" rows="2" class="input-print"></textarea>
+                    </div>
+                    <div class="form-group-inline mt-10">
+                        <label>TRATAMIENTO EN CASA</label>
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Higiene:</label>
+                        <input type="text" id="dHigiene" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Cuidado diario:</label>
+                        <input type="text" id="dCuidadoDiario" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Específicos:</label>
+                        <input type="text" id="dEspecificos" class="input-print">
+                    </div>
+                </div>
+
+                <div class="acciones-ficha">
+                    <button type="button" class="btn-cancelar" id="btnCerrarFicha">Cancelar y Volver</button>
+                    <button type="submit" class="btn-primary">Guardar Diagnóstico</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
