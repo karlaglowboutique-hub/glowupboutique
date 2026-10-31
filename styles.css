@@ -72,7 +72,9 @@ body {
 
 /* Botones de acción en el historial */
 .card-acciones { display: flex; gap: 10px; margin-top: 10px; justify-content: flex-end; border-top: 1px dashed #eee; padding-top: 10px; }
-.btn-edit, .btn-delete { padding: 5px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+.btn-ver-detalle, .btn-edit, .btn-delete { padding: 5px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: background 0.2s; }
+.btn-ver-detalle { background: #e8f5e9; color: #2e7d32; }
+.btn-ver-detalle:hover { background: #c8e6c9; }
 .btn-edit { background: #e3f2fd; color: #1565c0; }
 .btn-edit:hover { background: #bbdefb; }
 .btn-delete { background: #ffebee; color: #c62828; }
@@ -90,55 +92,38 @@ body {
 .cliente-card .btn-ver { background: #8e24aa; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
 .cliente-card .btn-ver:hover { background: #6a1b9a; }
 
-
 /* ===== VISTA FICHA COMPLETA (DIAGNÓSTICO ANESI) ===== */
-.vista-ficha {
-    display: none; 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #e0e0e0; z-index: 1000; overflow-y: auto; padding: 40px 15px;
-}
-.ficha-papel {
-    background: #fff; max-width: 850px; margin: 0 auto; padding: 50px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 4px; position: relative;
-}
-.ficha-header-print {
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 2px solid #8e24aa; padding-bottom: 20px; margin-bottom: 40px;
-}
+.vista-ficha { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #e0e0e0; z-index: 1000; overflow-y: auto; padding: 40px 15px; }
+.ficha-papel { background: #fff; max-width: 850px; margin: 0 auto; padding: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 4px; position: relative; }
+.ficha-header-print { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #8e24aa; padding-bottom: 20px; margin-bottom: 40px; }
 .ficha-logo { font-family: serif; font-size: 22px; color: #8e24aa; font-weight: bold; }
 .ficha-logo span { font-weight: normal; font-size: 12px; display: block; letter-spacing: 3px; }
 .ficha-titulo { text-align: center; }
 .ficha-titulo h2 { font-size: 24px; color: #333; font-weight: 600; margin-bottom: 5px; }
 .ficha-titulo p { font-size: 14px; color: #777; font-style: italic; }
-
 .seccion-ficha { margin-bottom: 45px; } 
-.seccion-ficha h4 {
-    font-size: 14px; color: #8e24aa; margin-bottom: 25px; font-weight: bold;
-    border-bottom: 1px solid #eee; padding-bottom: 8px; letter-spacing: 1px;
-}
+.seccion-ficha h4 { font-size: 14px; color: #8e24aa; margin-bottom: 25px; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 8px; letter-spacing: 1px; }
 .seccion-ficha h5 { font-size: 13px; color: #555; margin-bottom: 15px; margin-top: 25px; }
-
 .form-group-inline { display: flex; align-items: flex-start; margin-bottom: 25px; font-size: 14px; }
 .form-group-inline label { width: 260px; flex-shrink: 0; color: #555; margin-top: 5px; }
-.input-print {
-    flex: 1; border: none; border-bottom: 1px dotted #999; padding: 8px; 
-    font-size: 14px; font-family: inherit; color: #333; background: transparent;
-}
+.input-print { flex: 1; border: none; border-bottom: 1px dotted #999; padding: 8px; font-size: 14px; font-family: inherit; color: #333; background: transparent; }
 .input-print:focus { outline: none; border-bottom: 1px solid #8e24aa; background: #fdf5fd; }
 textarea.input-print { resize: vertical; min-height: 60px; }
-
 .checkbox-group { display: flex; gap: 30px; font-size: 14px; color: #444; margin-bottom: 15px; }
 .checkbox-group label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .grid-checkboxes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-size: 14px; color: #444; margin-bottom: 25px; }
 .grid-checkboxes label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-
 .mt-10 { margin-top: 15px; }
 .mt-15 { margin-top: 25px; }
-
 .acciones-ficha { display: flex; justify-content: flex-end; gap: 20px; margin-top: 50px; border-top: 1px solid #eee; padding-top: 30px; }
 .btn-cancelar { padding: 12px 25px; background: #e0e0e0; color: #333; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
 .btn-cancelar:hover { background: #bdbdbd; }
 .acciones-ficha .btn-primary { width: auto; margin-bottom: 0; padding: 12px 35px; }
+
+/* ===== MODAL DE ELIMINACIÓN ===== */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal-content { background: #fff; border-radius: 15px; padding: 30px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: fadeIn 0.3s ease; }
 
 @media (max-width: 600px) {
     .form-row, .checkbox-group { flex-direction: column; gap: 10px; }
