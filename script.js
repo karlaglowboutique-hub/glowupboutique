@@ -1,5 +1,5 @@
 // ===== USUARIO DE LOGIN =====
-const USUARIO_VALIDO = { nombre: "Karla", rut: "15699047-7", password: "Carla" };
+const USUARIO_VALIDO = { nombre: "Carla", rut: "15699047-7", password: "Carla" };
 
 function limpiarRut(rut) { return rut.replace(/\./g, '').trim(); }
 function formatearRut(rut) {
@@ -21,6 +21,11 @@ const panelView = document.getElementById("panelView");
 const vistaFichaCompleta = document.getElementById("vistaFichaCompleta");
 const contenedorFicha = document.getElementById("contenedorFicha");
 const formDiagnostico = document.getElementById("formDiagnosticoAnesi");
+
+// Variables para el modal de eliminación
+let rutAEliminar = null;
+let idAEliminar = null;
+let tipoEliminacion = null; // "atencion" o "cliente"
 
 // ===== LOGIN =====
 loginForm.addEventListener("submit", (e) => {
@@ -117,7 +122,10 @@ function mostrarFichaCliente(cliente) {
                     <h3>✨ Ficha del Paciente</h3>
                     <p>Clínica Estética - Datos Base</p>
                 </div>
-                <button class="btn-secondary" id="btnNuevoDiag">➕ Nuevo Diagnóstico Facial</button>
+                <div style="display: flex; gap: 10px; flex-direction: column;">
+                    <button class="btn-secondary" id="btnNuevoDiag" style="margin-top: 0;">➕ Nuevo Diagnóstico</button>
+                    <button class="btn-delete-cliente" style="background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s;">🗑️ Borrar Cliente</button>
+                </div>
             </div>
             
             <h4>Datos Personales</h4>
@@ -142,8 +150,13 @@ function mostrarFichaCliente(cliente) {
         </div>
     `;
 
-    // Asignar eventos
+    // Asignar eventos a los botones
     document.getElementById("btnNuevoDiag").addEventListener("click", () => abrirFichaAnesi(cliente.rut, null, false));
+    
+    // Botón para borrar cliente entero
+    document.querySelector(".btn-delete-cliente").addEventListener("click", () => {
+        abrirModalEliminar(cliente.rut, null, "cliente");
+    });
 
     document.querySelectorAll(".btn-ver-detalle").forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -157,33 +170,9 @@ function mostrarFichaCliente(cliente) {
         });
     });
 
-    // Lógica especial para el botón Eliminar
     document.querySelectorAll(".btn-delete").forEach(btn => {
         btn.addEventListener("click", (e) => {
-            const button = e.target;
-            const rut = button.getAttribute("data-rut");
-            const id = button.getAttribute("data-id");
-
-            if (button.classList.contains("confirmando")) {
-                // Si ya estaba en modo confirmación, eliminamos
-                ejecutarEliminacion(rut, id);
-            } else {
-                // Si es el primer clic, activamos modo confirmación
-                button.classList.add("confirmando");
-                button.textContent = "¿Seguro? Sí, borrar";
-                button.style.backgroundColor = "#c62828";
-                button.style.color = "white";
-
-                // Si el usuario no hace clic en 3 segundos, se cancela
-                setTimeout(() => {
-                    if (document.body.contains(button)) {
-                        button.classList.remove("confirmando");
-                        button.textContent = "🗑️ Eliminar";
-                        button.style.backgroundColor = "";
-                        button.style.color = "";
-                    }
-                }, 3000);
-            }
+            abrirModalEliminar(e.target.getAttribute("data-rut"), e.target.getAttribute("data-id"), "atencion");
         });
     });
 }
@@ -375,18 +364,60 @@ formDiagnostico.addEventListener("submit", (e) => {
     mostrarFichaCliente(cliente);
 });
 
-// ===== EJECUTAR ELIMINACIÓN DEFINITIVA =====
-function ejecutarEliminacion(rut, id) {
-    const cliente = clientes[rut];
-    if (!cliente || !cliente.atenciones) return;
+// ===== LÓGICA DEL MODAL DE ELIMINACIÓN =====
+function abrirModalEliminar(rut, id, tipo) {
+    rutAEliminar = rut;
+    idAEliminar = id;
+    tipoEliminacion = tipo;
 
-    // Filtramos para quitar la ficha
-    cliente.atenciones = cliente.atenciones.filter(a => a.id !== id);
-    
-    guardarClientes();
-    renderListaClientes();
-    mostrarFichaCliente(cliente);
+    const modalTitle = document.getElementById("modalEliminarTitle");
+    const modalText = document.getElementById("modalEliminarText");
+
+    if (tipo === "cliente") {
+        modalTitle.textContent = "⚠️ Borrar Cliente Completo";
+        modalText.textContent = "¿Estás seguro de que deseas borrar a este cliente y TODAS sus fichas de atención? Esta acción no se puede deshacer.";
+    } else {
+        modalTitle.textContent = "⚠️ Eliminar Ficha";
+        modalText.textContent = "¿Estás seguro de que deseas eliminar este diagnóstico permanentemente? Esta acción no se puede deshacer.";
+    }
+
+    document.getElementById("modalEliminar").classList.add("active");
 }
+
+document.getElementById("btnCancelarEliminar").addEventListener("click", () => {
+    document.getElementById("modalEliminar").classList.remove("active");
+    rutAEliminar = null;
+    idAEliminar = null;
+    tipoEliminacion = null;
+});
+
+document.getElementById("btnConfirmarEliminar").addEventListener("click", () => {
+    if (!rutAEliminar || !tipoEliminacion) return;
+
+    if (tipoEliminacion === "cliente") {
+        // Borrar cliente entero
+        delete clientes[rutAEliminar];
+        guardarClientes();
+        renderListaClientes();
+        contenedorFicha.innerHTML = ""; // Limpiar la vista
+        document.getElementById("buscarRut").value = "";
+    } else if (tipoEliminacion === "atencion") {
+        // Borrar solo una ficha
+        const cliente = clientes[rutAEliminar];
+        if (cliente && cliente.atenciones) {
+            cliente.atenciones = cliente.atenciones.filter(a => a.id !== idAEliminar);
+            guardarClientes();
+            renderListaClientes();
+            mostrarFichaCliente(cliente); // Refrescar la ficha del cliente actual
+        }
+    }
+
+    // Cerrar modal y limpiar variables
+    document.getElementById("modalEliminar").classList.remove("active");
+    rutAEliminar = null;
+    idAEliminar = null;
+    tipoEliminacion = null;
+});
 
 // Render inicial
 renderListaClientes();
