@@ -1,5 +1,5 @@
 // ===== USUARIO DE LOGIN =====
-const USUARIO_VALIDO = { nombre: "Carla", rut: "15699047-7", password: "Carla" };
+const USUARIO_VALIDO = { nombre: "Juan Pérez", rut: "12345678-9", password: "123" };
 
 function limpiarRut(rut) { return rut.replace(/\./g, '').trim(); }
 function formatearRut(rut) {
@@ -120,7 +120,7 @@ function mostrarFichaCliente(cliente) {
             <div class="ficha-header">
                 <div>
                     <h3>✨ Ficha del Paciente</h3>
-                    <p>Clínica Estética - Datos Base</p>
+                    <p>Glow Up Boutique - Datos Base</p>
                 </div>
                 <div style="display: flex; gap: 10px; flex-direction: column;">
                     <button class="btn-secondary" id="btnNuevoDiag" style="margin-top: 0;">➕ Nuevo Diagnóstico</button>
@@ -153,7 +153,6 @@ function mostrarFichaCliente(cliente) {
     // Asignar eventos a los botones
     document.getElementById("btnNuevoDiag").addEventListener("click", () => abrirFichaAnesi(cliente.rut, null, false));
     
-    // Botón para borrar cliente entero
     document.querySelector(".btn-delete-cliente").addEventListener("click", () => {
         abrirModalEliminar(cliente.rut, null, "cliente");
     });
@@ -395,24 +394,21 @@ document.getElementById("btnConfirmarEliminar").addEventListener("click", () => 
     if (!rutAEliminar || !tipoEliminacion) return;
 
     if (tipoEliminacion === "cliente") {
-        // Borrar cliente entero
         delete clientes[rutAEliminar];
         guardarClientes();
         renderListaClientes();
-        contenedorFicha.innerHTML = ""; // Limpiar la vista
+        contenedorFicha.innerHTML = "";
         document.getElementById("buscarRut").value = "";
     } else if (tipoEliminacion === "atencion") {
-        // Borrar solo una ficha
         const cliente = clientes[rutAEliminar];
         if (cliente && cliente.atenciones) {
             cliente.atenciones = cliente.atenciones.filter(a => a.id !== idAEliminar);
             guardarClientes();
             renderListaClientes();
-            mostrarFichaCliente(cliente); // Refrescar la ficha del cliente actual
+            mostrarFichaCliente(cliente);
         }
     }
 
-    // Cerrar modal y limpiar variables
     document.getElementById("modalEliminar").classList.remove("active");
     rutAEliminar = null;
     idAEliminar = null;
