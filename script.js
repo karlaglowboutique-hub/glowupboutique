@@ -20,6 +20,31 @@ let idAEliminar = null;
 let tipoEliminacion = null; 
 
 // =====================================================================
+// ============ ATAJO DE TECLADO GLOBAL (PANEL SECRETO) ================
+// =====================================================================
+// Esto funciona en CUALQUIER página (index, panel, programador) 
+// siempre que NO estés escribiendo dentro de un cuadro de texto.
+let keysPressed = "";
+document.addEventListener("keydown", (e) => {
+    // Ignorar si el usuario está escribiendo en un formulario
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
+
+    keysPressed += e.key.toLowerCase();
+    
+    // Mantener el buffer en un tamaño manejable
+    if (keysPressed.length > 20) {
+        keysPressed = keysPressed.slice(-20);
+    }
+
+    // Escucha la palabra "programador" o "programacion"
+    if (keysPressed.includes("programador") || keysPressed.includes("programacion")) {
+        keysPressed = "";
+        // Redirige al panel secreto
+        window.location.href = "programador.html"; 
+    }
+});
+
+// =====================================================================
 // ==================== LÓGICA PARA index.html (LOGIN) =================
 // =====================================================================
 if (document.getElementById("loginForm")) {
@@ -350,26 +375,6 @@ if (document.getElementById("panelView")) {
         }
         document.getElementById("modalEliminar").classList.remove("active");
         rutAEliminar = null; idAEliminar = null; tipoEliminacion = null;
-    });
-
-    // Lógica del atajo de teclado corregida
-    let keysPressed = "";
-    document.addEventListener("keydown", (e) => {
-        // Ignorar si el usuario está escribiendo en un formulario
-        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-
-        keysPressed += e.key.toLowerCase();
-        
-        // Mantener el buffer en un tamaño manejable
-        if (keysPressed.length > 20) {
-            keysPressed = keysPressed.slice(-20);
-        }
-
-        // Escucha ambas palabras por si acaso
-        if (keysPressed.includes("programador") || keysPressed.includes("programacion")) {
-            keysPressed = "";
-            window.location.href = "programador.html"; 
-        }
     });
 
     renderListaClientes();
