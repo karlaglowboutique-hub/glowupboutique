@@ -1,5 +1,5 @@
 // ===== USUARIO DE LOGIN =====
-const USUARIO_VALIDO = { nombre: "Juan Pérez", rut: "12345678-9", password: "123" };
+const USUARIO_VALIDO = { nombre: "Carla", rut: "15699047-7", password: "Carla" };
 
 function limpiarRut(rut) { return rut.replace(/\./g, '').trim(); }
 function formatearRut(rut) {
