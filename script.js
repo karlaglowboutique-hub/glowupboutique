@@ -1,5 +1,5 @@
 // ===== CONFIGURACIÓN GLOBAL =====
-const USUARIO_VALIDO = { nombre: "Juan Pérez", rut: "12345678-9", password: "clinica123" };
+const USUARIO_VALIDO = { nombre: "Carla", rut: "15699047-7", password: "Carla" };
 const USUARIO_PROG = { nombre: "Diego Figueroa", rut: "22824389-2", password: "200812Diego" };
 
 // Base de datos
