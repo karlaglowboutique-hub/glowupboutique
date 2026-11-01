@@ -352,13 +352,21 @@ if (document.getElementById("panelView")) {
         rutAEliminar = null; idAEliminar = null; tipoEliminacion = null;
     });
 
+    // Lógica del atajo de teclado corregida
     let keysPressed = "";
     document.addEventListener("keydown", (e) => {
+        // Ignorar si el usuario está escribiendo en un formulario
         if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
         keysPressed += e.key.toLowerCase();
-        if (keysPressed.length > 15) keysPressed = keysPressed.slice(-15);
         
-        if (keysPressed.includes("programacion")) {
+        // Mantener el buffer en un tamaño manejable
+        if (keysPressed.length > 20) {
+            keysPressed = keysPressed.slice(-20);
+        }
+
+        // Escucha ambas palabras por si acaso
+        if (keysPressed.includes("programador") || keysPressed.includes("programacion")) {
             keysPressed = "";
             window.location.href = "programador.html"; 
         }
@@ -392,7 +400,7 @@ if (document.getElementById("loginProgBox")) {
             
             loginProgBox.style.display = "none";
             dashboardProg.style.display = "block";
-            renderListaClientesProg(); // <--- AQUÍ SE LLENA LA LISTA
+            renderListaClientesProg();
         } else {
             errorProg.textContent = "Acceso Denegado. Credenciales incorrectas.";
             errorProg.style.color = "#e53935";
@@ -402,7 +410,6 @@ if (document.getElementById("loginProgBox")) {
 
     const listaClientesProg = document.getElementById("listaClientesProg");
     function renderListaClientesProg() {
-        // Volvemos a leer del localStorage para asegurar que tenemos los datos más frescos
         clientes = JSON.parse(localStorage.getItem("clientesClinica")) || {};
         
         const claves = Object.keys(clientes);
