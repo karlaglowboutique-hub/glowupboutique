@@ -17,7 +17,7 @@ let rutAEliminar = null;
 let idAEliminar = null;
 let tipoEliminacion = null; 
 
-// ===== ATAJO DE TECLADO GLOBAL =====
+// ===== ATAJO DE TECLADO GLOBAL (Para el Panel Secreto) =====
 let keysPressed = "";
 document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
@@ -30,7 +30,9 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-// ===== INDEX =====
+// =====================================================================
+// ==================== LÓGICA PARA index.html (LOGIN) =================
+// =====================================================================
 if (document.getElementById("loginForm")) {
     const loginForm = document.getElementById("loginForm");
     const errorMsg = document.getElementById("errorMsg");
@@ -49,7 +51,9 @@ if (document.getElementById("loginForm")) {
     });
 }
 
-// ===== PANEL =====
+// =====================================================================
+// ==================== LÓGICA PARA panel.html (CLÍNICA) ===============
+// =====================================================================
 if (document.getElementById("panelView")) {
     const panelView = document.getElementById("panelView");
     const vistaFichaCompleta = document.getElementById("vistaFichaCompleta");
@@ -189,7 +193,7 @@ if (document.getElementById("panelView")) {
                         <p>Glow Up Boutique</p>
                     </div>
                     <div class="ficha-acciones-header">
-                        <!-- CAMBIADO A btn-primary PARA QUE SE VEAN NEGROS CON DORADO -->
+                        <!-- AQUÍ ESTÁ EL CAMBIO CLAVE: Usamos btn-primary en ambos -->
                         <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}', null, false)" style="margin-bottom:0;">➕ Nuevo Diagnóstico</button>
                         <button class="btn-primary" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')" style="margin-bottom:0;">🗑️ Borrar Cliente</button>
                     </div>
@@ -361,7 +365,9 @@ if (document.getElementById("panelView")) {
     renderListaClientes();
 }
 
-// ===== PROGRAMADOR =====
+// =====================================================================
+// ================= LÓGICA PARA programador.html ======================
+// =====================================================================
 if (document.getElementById("loginProgBox")) {
     const loginProgBox = document.getElementById("loginProgBox");
     const dashboardProg = document.getElementById("dashboardProg");
