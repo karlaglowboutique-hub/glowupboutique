@@ -22,6 +22,7 @@
             <button class="tab-btn" data-tab="nuevo">Ingresar Cliente Nuevo</button>
         </div>
 
+        <!-- Pestaña Buscar -->
         <div class="tab-content active" id="tab-buscar">
             <div class="form-group">
                 <label for="buscarRut">Ingrese RUT del cliente</label>
@@ -32,6 +33,7 @@
             <div id="contenedorFicha"></div>
         </div>
 
+        <!-- Pestaña Nuevo Cliente -->
         <div class="tab-content" id="tab-nuevo">
             <form id="formNuevo">
                 <h3>Datos Personales</h3>
@@ -88,7 +90,7 @@
         </div>
     </div>
 
-    <!-- Ficha ANESI (Oculta hasta que se abre) -->
+    <!-- Ficha ANESI -->
     <div class="vista-ficha" id="vistaFichaCompleta">
         <div class="ficha-papel">
             <div class="ficha-header-print">
@@ -229,14 +231,14 @@
         </div>
     </div>
 
-    <!-- MODAL ELIMINAR -->
+    <!-- Modal Eliminar -->
     <div class="modal-overlay" id="modalEliminar">
         <div class="modal-content" style="text-align: center; max-width: 400px;">
             <h3 style="color: #e53935; margin-bottom: 15px;" id="modalEliminarTitle">⚠️ Eliminar</h3>
             <p style="color: #555; margin-bottom: 25px; font-size: 15px;" id="modalEliminarText">¿Estás seguro?</p>
             <div style="display: flex; gap: 10px; justify-content: center;">
                 <button class="btn-cancelar" id="btnCancelarEliminar" style="flex: 1; padding: 10px;">Cancelar</button>
-                <button class="btn-primary" id="btnConfirmarEliminar" style="flex: 1; padding: 10px; background: #e53935; margin-bottom: 0; border: none;">Sí, eliminar</button>
+                <button class="btn-primary" id="btnConfirmarEliminar" style="flex: 1; padding: 10px; background: #e53935; color:#fff; border-color: #e53935; margin-bottom: 0;">Sí, eliminar</button>
             </div>
         </div>
     </div>
