@@ -5,19 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración - Glow Up Boutique</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Estilos extra para el panel del programador */
-        body { background: #0a0a0a; }
-        .panel { max-width: 1000px; }
-        .admin-card { background: #fff; border: 1px solid #ddd; border-left: 5px solid #111; border-radius: 8px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .admin-card .info strong { display: block; color: #111; font-size: 15px; }
-        .admin-card .info span { color: #777; font-size: 12px; }
-        .admin-actions { display: flex; gap: 10px; }
-    </style>
 </head>
 <body>
 
-    <div class="panel" style="display: block;">
+    <div class="panel" style="display: block; max-width: 1000px;">
         <div class="panel-header">
             <h2 style="color: #e53935;">⚙️ Panel de Programador</h2>
             <button class="btn-logout" id="btnSalirProg">Cerrar Sesión</button>
@@ -38,7 +29,7 @@
                     <label for="pPass">Contraseña</label>
                     <input type="password" id="pPass" required>
                 </div>
-                <button type="submit" class="btn-primary" style="margin-top: 10px; background: #e53935; border-color: #e53935; color: #fff;">Desbloquear Acceso</button>
+                <button type="submit" class="btn-primary" style="background: #e53935; border-color: #e53935; color: #fff;">Desbloquear Acceso</button>
                 <div class="error-msg" id="errorProg" style="margin-top: 15px;"></div>
             </form>
         </div>
@@ -95,18 +86,6 @@
                     <button type="submit" class="btn-primary" style="flex: 1; margin-bottom: 0;">Guardar Cambios</button>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- Modal Eliminar -->
-    <div class="modal-overlay" id="modalEliminar">
-        <div class="modal-content" style="text-align: center; max-width: 400px;">
-            <h3 style="color: #e53935; margin-bottom: 15px;" id="modalEliminarTitle">⚠️ Eliminar</h3>
-            <p style="color: #555; margin-bottom: 25px; font-size: 15px;" id="modalEliminarText">¿Estás seguro?</p>
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                <button class="btn-cancelar" id="btnCancelarEliminar" style="flex: 1; padding: 10px;">Cancelar</button>
-                <button class="btn-primary" id="btnConfirmarEliminar" style="flex: 1; padding: 10px; background: #e53935; margin-bottom: 0; border: none;">Sí, eliminar</button>
-            </div>
         </div>
     </div>
 
