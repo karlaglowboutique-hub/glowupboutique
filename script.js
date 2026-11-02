@@ -1,8 +1,7 @@
 // ===== CONFIGURACIÓN GLOBAL =====
-const USUARIO_VALIDO = { nombre: "Carla", rut: "15699047-7", password: "Carla" };
+const USUARIO_VALIDO = { nombre: "Juan Pérez", rut: "12345678-9", password: "clinica123" };
 const USUARIO_PROG = { nombre: "Diego Figueroa", rut: "22824389-2", password: "200812Diego" };
 
-// Base de datos
 let clientes = JSON.parse(localStorage.getItem("clientesClinica")) || {};
 function guardarClientes() { localStorage.setItem("clientesClinica", JSON.stringify(clientes)); }
 
@@ -14,39 +13,24 @@ function formatearRut(rut) {
     return new Intl.NumberFormat('es-CL').format(cuerpo) + dv;
 }
 
-// Variables globales para modales
 let rutAEliminar = null;
 let idAEliminar = null;
 let tipoEliminacion = null; 
 
-// =====================================================================
-// ============ ATAJO DE TECLADO GLOBAL (PANEL SECRETO) ================
-// =====================================================================
-// Esto funciona en CUALQUIER página (index, panel, programador) 
-// siempre que NO estés escribiendo dentro de un cuadro de texto.
+// ===== ATAJO DE TECLADO GLOBAL =====
 let keysPressed = "";
 document.addEventListener("keydown", (e) => {
-    // Ignorar si el usuario está escribiendo en un formulario
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
-
     keysPressed += e.key.toLowerCase();
-    
-    // Mantener el buffer en un tamaño manejable
-    if (keysPressed.length > 20) {
-        keysPressed = keysPressed.slice(-20);
-    }
+    if (keysPressed.length > 20) keysPressed = keysPressed.slice(-20);
 
-    // Escucha la palabra "programador" o "programacion"
     if (keysPressed.includes("programador") || keysPressed.includes("programacion")) {
         keysPressed = "";
-        // Redirige al panel secreto
         window.location.href = "programador.html"; 
     }
 });
 
-// =====================================================================
-// ==================== LÓGICA PARA index.html (LOGIN) =================
-// =====================================================================
+// ===== INDEX =====
 if (document.getElementById("loginForm")) {
     const loginForm = document.getElementById("loginForm");
     const errorMsg = document.getElementById("errorMsg");
@@ -65,18 +49,14 @@ if (document.getElementById("loginForm")) {
     });
 }
 
-// =====================================================================
-// ==================== LÓGICA PARA panel.html (CLÍNICA) ===============
-// =====================================================================
+// ===== PANEL =====
 if (document.getElementById("panelView")) {
     const panelView = document.getElementById("panelView");
     const vistaFichaCompleta = document.getElementById("vistaFichaCompleta");
     const contenedorFicha = document.getElementById("contenedorFicha");
     const formDiagnostico = document.getElementById("formDiagnosticoAnesi");
 
-    document.getElementById("btnLogout").addEventListener("click", () => {
-        window.location.href = "index.html";
-    });
+    document.getElementById("btnLogout").addEventListener("click", () => window.location.href = "index.html");
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -380,18 +360,14 @@ if (document.getElementById("panelView")) {
     renderListaClientes();
 }
 
-// =====================================================================
-// ================= LÓGICA PARA programador.html ======================
-// =====================================================================
+// ===== PROGRAMADOR =====
 if (document.getElementById("loginProgBox")) {
     const loginProgBox = document.getElementById("loginProgBox");
     const dashboardProg = document.getElementById("dashboardProg");
     const formLoginProg = document.getElementById("formLoginProg");
     const errorProg = document.getElementById("errorProg");
 
-    document.getElementById("btnSalirProg").addEventListener("click", () => {
-        window.location.href = "index.html";
-    });
+    document.getElementById("btnSalirProg").addEventListener("click", () => window.location.href = "index.html");
 
     formLoginProg.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -399,10 +375,7 @@ if (document.getElementById("loginProgBox")) {
         const rut = limpiarRut(document.getElementById("pRut").value);
         const pass = document.getElementById("pPass").value;
 
-        if (nombre.toLowerCase() === USUARIO_PROG.nombre.toLowerCase() && 
-            rut === USUARIO_PROG.rut && 
-            pass === USUARIO_PROG.password) {
-            
+        if (nombre.toLowerCase() === USUARIO_PROG.nombre.toLowerCase() && rut === USUARIO_PROG.rut && pass === USUARIO_PROG.password) {
             loginProgBox.style.display = "none";
             dashboardProg.style.display = "block";
             renderListaClientesProg();
