@@ -37,7 +37,7 @@ h1, h2, h3, h4 { font-family: 'Times New Roman', Times, serif; }
 
 /* ===== PANEL PRINCIPAL ===== */
 .panel { display: none; background: #fff; padding: 35px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); width: 100%; max-width: 850px; margin: 0 auto; }
-.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; gap: 15px; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; gap: 15px; flex-wrap: wrap; }
 .brand-header { display: flex; align-items: center; gap: 15px; }
 .mini-logo-img { width: 45px; height: 45px; object-fit: contain; border-radius: 50%; background-color: #000; padding: 2px; }
 .brand-header h2 { color: #111; font-size: 20px; letter-spacing: 2px; }
@@ -50,49 +50,49 @@ h1, h2, h3, h4 { font-family: 'Times New Roman', Times, serif; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
-/* ===== BOTONES UNIFICADOS ===== */
+/* ===== BOTONES GENERALES ===== */
 button { transition: all 0.3s ease; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; cursor: pointer; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-.btn-primary, .btn-login { width: 100%; padding: 14px; background: #111; color: #d4af37; border: 1px solid #d4af37; font-size: 14px; margin-bottom: 20px; }
-.btn-primary:hover, .btn-login:hover { background: #d4af37; color: #111; }
 
-.btn-secondary { padding: 10px 20px; background: #fff; color: #111; border: 1px solid #111; font-size: 13px; }
-.btn-secondary:hover { background: #f0f0f0; }
+/* Botón Principal (Negro/Dorado) */
+.btn-primary, .btn-login { width: 100%; padding: 14px; background: #111 !important; color: #d4af37 !important; border: 1px solid #d4af37 !important; font-size: 14px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 8px;}
+.btn-primary:hover, .btn-login:hover { background: #d4af37 !important; color: #111 !important; }
 
-/* Botón de cerrar sesión arreglado */
-.btn-logout { padding: 10px 20px; background: #fff; color: #e53935; border: 1px solid #e53935; font-size: 12px; white-space: nowrap; flex-shrink: 0; }
-.btn-logout:hover { background: #e53935; color: #fff; }
+/* Botón de cerrar sesión */
+.btn-logout { padding: 10px 20px; background: #fff !important; color: #e53935 !important; border: 1px solid #e53935 !important; font-size: 12px; white-space: nowrap; }
+.btn-logout:hover { background: #e53935 !important; color: #fff !important; }
 
-.btn-cancelar { padding: 12px 25px; background: #fff; color: #555; border: 1px solid #ccc; font-size: 13px; }
-.btn-cancelar:hover { background: #f5f5f5; border-color: #999; }
+/* Botones específicos de la Ficha del Paciente */
+.btn-secondary { padding: 10px 20px; background: #fff !important; color: #111 !important; border: 1px solid #111 !important; font-size: 12px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 5px;}
+.btn-secondary:hover { background: #f0f0f0 !important; }
+
+.btn-delete-cliente { padding: 10px 20px; background: #ffebee !important; color: #c62828 !important; border: 1px solid #ffcdd2 !important; font-size: 12px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 5px;}
+.btn-delete-cliente:hover { background: #ffcdd2 !important; }
 
 /* Botones del historial */
 .card-acciones { display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end; border-top: 1px solid #f0f0f0; padding-top: 15px; flex-wrap: wrap; }
-.btn-ver-detalle, .btn-edit, .btn-delete, .btn-delete-cliente { padding: 8px 15px; font-size: 12px; }
-.btn-ver-detalle { background: #fff; color: #333; border: 1px solid #ccc; }
-.btn-ver-detalle:hover { background: #f0f0f0; }
-.btn-edit { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-.btn-edit:hover { background: #bbdefb; }
-.btn-delete, .btn-delete-cliente { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
-.btn-delete:hover, .btn-delete-cliente:hover { background: #ffcdd2; }
-.btn-ver { background: #111; color: #d4af37; border: 1px solid #d4af37; padding: 8px 15px; font-size: 12px; white-space: nowrap;}
-.btn-ver:hover { background: #d4af37; color: #111; }
+.btn-ver-detalle, .btn-edit, .btn-delete { padding: 8px 15px; font-size: 11px; }
+.btn-ver-detalle { background: #fff !important; color: #333 !important; border: 1px solid #ccc !important; }
+.btn-ver-detalle:hover { background: #f0f0f0 !important; }
+.btn-edit { background: #e3f2fd !important; color: #1565c0 !important; border: 1px solid #bbdefb !important; }
+.btn-edit:hover { background: #bbdefb !important; }
+.btn-delete { background: #ffebee !important; color: #c62828 !important; border: 1px solid #ffcdd2 !important; }
+.btn-delete:hover { background: #ffcdd2 !important; }
+.btn-ver { background: #111 !important; color: #d4af37 !important; border: 1px solid #d4af37 !important; padding: 8px 15px; font-size: 12px; white-space: nowrap;}
+.btn-ver:hover { background: #d4af37 !important; color: #111 !important; }
+
+.btn-cancelar { padding: 12px 25px; background: #fff !important; color: #555 !important; border: 1px solid #ccc !important; font-size: 13px; }
+.btn-cancelar:hover { background: #f5f5f5 !important; border-color: #999 !important; }
 
 .acciones-ficha .btn-primary { width: auto; margin-bottom: 0; padding: 14px 40px; }
 
 /* ===== FICHA BASE DEL CLIENTE ===== */
 .ficha { margin-top: 20px; background: #fafafa; border: 1px solid #eee; border-radius: 12px; padding: 25px; animation: fadeIn 0.4s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.ficha-header { border-bottom: 1px solid #e0e0e0; padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; flex-wrap: wrap;}
+.ficha-header { border-bottom: 1px solid #e0e0e0; padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;}
 .ficha-header h3 { color: #111; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
 .ficha-header p { color: #888; font-size: 12px; margin-top: 5px; }
 
-/* Contenedor de los botones de la ficha (Nuevo Diagnóstico / Borrar Cliente) */
-.ficha-acciones-header { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 10px; 
-    min-width: 180px;
-}
+.ficha-acciones-header { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
 
 .ficha h4 { color: #d4af37; font-size: 14px; margin: 20px 0 10px 0; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
 .ficha-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
