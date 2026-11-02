@@ -1,5 +1,5 @@
 // ===== CONFIGURACIÓN GLOBAL =====
-const USUARIO_VALIDO = { nombre: "Carla", rut: "15699047-7", password: "Carla" };
+const USUARIO_VALIDO = { nombre: "Juan Pérez", rut: "12345678-9", password: "clinica123" };
 const USUARIO_PROG = { nombre: "Diego Figueroa", rut: "22824389-2", password: "200812Diego" };
 
 let clientes = JSON.parse(localStorage.getItem("clientesClinica")) || {};
@@ -17,7 +17,7 @@ let rutAEliminar = null;
 let idAEliminar = null;
 let tipoEliminacion = null; 
 
-// ===== ATAJO DE TECLADO GLOBAL =====
+// ===== ATAJO DE TECLADO GLOBAL (Para el Panel Secreto) =====
 let keysPressed = "";
 document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
@@ -30,7 +30,9 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-// ===== INDEX =====
+// =====================================================================
+// ==================== LÓGICA PARA index.html (LOGIN) =================
+// =====================================================================
 if (document.getElementById("loginForm")) {
     const loginForm = document.getElementById("loginForm");
     const errorMsg = document.getElementById("errorMsg");
@@ -49,7 +51,9 @@ if (document.getElementById("loginForm")) {
     });
 }
 
-// ===== PANEL =====
+// =====================================================================
+// ==================== LÓGICA PARA panel.html (CLÍNICA) ===============
+// =====================================================================
 if (document.getElementById("panelView")) {
     const panelView = document.getElementById("panelView");
     const vistaFichaCompleta = document.getElementById("vistaFichaCompleta");
@@ -188,9 +192,9 @@ if (document.getElementById("panelView")) {
                         <h3>✨ Ficha del Paciente</h3>
                         <p>Glow Up Boutique</p>
                     </div>
-                    <div style="display: flex; gap: 10px; flex-direction: column;">
-                        <button class="btn-secondary" onclick="abrirFichaAnesi('${cliente.rut}', null, false)">➕ Nuevo Diagnóstico</button>
-                        <button class="btn-delete-cliente" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')">🗑️ Borrar Cliente</button>
+                    <div class="ficha-acciones-header">
+                        <button class="btn-secondary" onclick="abrirFichaAnesi('${cliente.rut}', null, false)" style="width:100%;">➕ Nuevo Diagnóstico</button>
+                        <button class="btn-delete-cliente" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')" style="width:100%;">🗑️ Borrar Cliente</button>
                     </div>
                 </div>
                 <h4>Datos Personales</h4>
@@ -360,7 +364,9 @@ if (document.getElementById("panelView")) {
     renderListaClientes();
 }
 
-// ===== PROGRAMADOR =====
+// =====================================================================
+// ================= LÓGICA PARA programador.html ======================
+// =====================================================================
 if (document.getElementById("loginProgBox")) {
     const loginProgBox = document.getElementById("loginProgBox");
     const dashboardProg = document.getElementById("dashboardProg");
