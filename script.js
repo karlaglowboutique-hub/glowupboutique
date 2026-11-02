@@ -193,7 +193,6 @@ if (document.getElementById("panelView")) {
                         <p>Glow Up Boutique</p>
                     </div>
                     <div class="ficha-acciones-header">
-                        <!-- AQUÍ ESTÁ EL CAMBIO CLAVE: Usamos btn-primary en ambos -->
                         <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}', null, false)" style="margin-bottom:0;">➕ Nuevo Diagnóstico</button>
                         <button class="btn-primary" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')" style="margin-bottom:0;">🗑️ Borrar Cliente</button>
                     </div>
@@ -418,15 +417,25 @@ if (document.getElementById("loginProgBox")) {
 
             const divAcciones = document.createElement("div");
             divAcciones.className = "admin-actions";
+            divAcciones.style.display = "flex";
+            divAcciones.style.gap = "10px";
 
+            // BOTÓN EDITAR DATOS (Ahora con estilo btn-primary)
             const btnEdit = document.createElement("button");
-            btnEdit.className = "btn-edit";
+            btnEdit.className = "btn-primary";
+            btnEdit.style.width = "auto";
+            btnEdit.style.marginBottom = "0";
+            btnEdit.style.padding = "10px 15px";
             btnEdit.textContent = "✏️ Editar Datos";
             btnEdit.addEventListener("click", () => abrirEditarProg(c.rut));
             divAcciones.appendChild(btnEdit);
 
+            // BOTÓN BORRAR DE BD (Ahora con estilo btn-primary)
             const btnDel = document.createElement("button");
-            btnDel.className = "btn-delete";
+            btnDel.className = "btn-primary";
+            btnDel.style.width = "auto";
+            btnDel.style.marginBottom = "0";
+            btnDel.style.padding = "10px 15px";
             btnDel.textContent = "🗑️ Borrar de BD";
             btnDel.addEventListener("click", () => {
                 if(confirm(`¿Borrar a ${c.nombre} y todas sus fichas permanentemente?`)) {
