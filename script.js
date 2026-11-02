@@ -189,8 +189,9 @@ if (document.getElementById("panelView")) {
                         <p>Glow Up Boutique</p>
                     </div>
                     <div class="ficha-acciones-header">
-                        <button class="btn-secondary" onclick="abrirFichaAnesi('${cliente.rut}', null, false)">➕ Nuevo Diagnóstico</button>
-                        <button class="btn-delete-cliente" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')">🗑️ Borrar Cliente</button>
+                        <!-- CAMBIADO A btn-primary PARA QUE SE VEAN NEGROS CON DORADO -->
+                        <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}', null, false)" style="margin-bottom:0;">➕ Nuevo Diagnóstico</button>
+                        <button class="btn-primary" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')" style="margin-bottom:0;">🗑️ Borrar Cliente</button>
                     </div>
                 </div>
                 <h4>Datos Personales</h4>
