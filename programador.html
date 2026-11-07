@@ -7,88 +7,44 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="panel" style="display: block; max-width: 1000px;">
         <div class="panel-header">
-            <h2 style="color: #111; font-family: 'Times New Roman', Times, serif; font-size: 22px; letter-spacing: 2px;">⚙️ Panel de Programador</h2>
+            <h2 style="color: #111; font-family: 'Times New Roman', serif; letter-spacing: 2px;">⚙️ Panel de Programador</h2>
             <button class="btn-logout" id="btnSalirProg">Cerrar Sesión</button>
         </div>
 
-        <!-- Login del programador (Oculto al inicio) -->
         <div id="loginProgBox" style="max-width: 400px; margin: 50px auto;">
             <form id="formLoginProg">
-                <div class="form-group">
-                    <label for="pNombre">Nombre</label>
-                    <input type="text" id="pNombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="pRut">RUT</label>
-                    <input type="text" id="pRut" required>
-                </div>
-                <div class="form-group">
-                    <label for="pPass">Contraseña</label>
-                    <input type="password" id="pPass" required>
-                </div>
-                <button type="submit" class="btn-primary" style="background: #e53935; border-color: #e53935; color: #fff;">Desbloquear Acceso</button>
+                <div class="form-group"><label for="pEmail">Correo (Programador)</label><input type="email" id="pEmail" required></div>
+                <div class="form-group"><label for="pPass">Contraseña</label><input type="password" id="pPass" required></div>
+                <button type="submit" class="btn-primary">Desbloquear Acceso</button>
                 <div class="error-msg" id="errorProg" style="margin-top: 15px;"></div>
             </form>
         </div>
 
-        <!-- Lista de clientes (Oculto hasta que se loguee) -->
         <div id="dashboardProg" style="display: none;">
-            <h3>Base de Datos de Clientes</h3>
+            <h3>Base de Datos en la Nube</h3>
             <div id="listaClientesProg" style="margin-top: 20px;"></div>
         </div>
     </div>
 
-    <!-- Modal Editar Cliente -->
-    <div class="modal-overlay" id="modalEditarProg">
-        <div class="modal-content" style="max-width: 500px;">
-            <h3 style="color: #111; margin-bottom: 20px;">✏️ Editar Cliente (BD)</h3>
-            <form id="formEditarProg">
-                <input type="hidden" id="epRutOriginal">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" id="epNombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label>RUT</label>
-                        <input type="text" id="epRut" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Edad</label>
-                        <input type="number" id="epEdad" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="text" id="epTelefono" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="epEmail" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tipo de Piel</label>
-                        <input type="text" id="epPiel" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Alergias</label>
-                        <input type="text" id="epAlergias" required>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="button" class="btn-cancelar" id="btnCerrarEditarProg" style="flex: 1;">Cancelar</button>
-                    <button type="submit" class="btn-primary" style="flex: 1; margin-bottom: 0;">Guardar Cambios</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    <script src="script.js"></script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAynA1pU1npXEN_HvXNxTC4Xn7QB_SWyWg",
+            authDomain: "glow-up-boutique-bdc0c.firebaseapp.com",
+            projectId: "glow-up-boutique-bdc0c",
+            storageBucket: "glow-up-boutique-bdc0c.firebasestorage.app",
+            messagingSenderId: "372481623830",
+            appId: "1:372481623830:web:e93a695c930f6a934ef237"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.firebaseDB = getFirestore(app); window.firebaseAuth = getAuth(app);
+        const script = document.createElement('script'); script.src = "script.js"; script.type = "module"; document.body.appendChild(script);
+    </script>
 </body>
 </html>
