@@ -142,7 +142,7 @@ if (document.getElementById("panelView")) {
             });
         }
 
-        // VENTANA EMERGENTE (CORREGIDA)
+        // MOSTRAR FICHA RESUMIDA (Corregido: Los botones ahora funcionan)
         function mostrarFichaCliente(cliente) {
             let html = `
             <div class="ficha">
@@ -166,11 +166,12 @@ if (document.getElementById("panelView")) {
             </div>`;
             contenedorFicha.innerHTML = html;
 
-            // Asignar eventos con IDs fijos
+            // AQUÍ ESTÁ LA CORRECCIÓN: Asignamos los eventos a los botones recién creados
             document.getElementById("btnAbrirFicha").onclick = () => abrirFichaAnesi(cliente.rut);
             document.getElementById("btnBorrarFicha").onclick = () => abrirModalEliminar(cliente.rut, null, 'cliente');
         }
 
+        // ABRIR FICHA GRANDE (Usando la clase .active)
         function abrirFichaAnesi(rut) {
             const c = clientes[rut];
             if (!c) return;
@@ -188,7 +189,7 @@ if (document.getElementById("panelView")) {
             document.getElementById("diagTipoPiel").value = c.piel || "Normal";
             document.getElementById("diagObservaciones").value = "";
             
-            // AQUÍ ESTÁ EL CAMBIO CLAVE: Usamos la clase .active
+            // Abre la ventana agregando la clase active
             document.getElementById("vistaFichaCompleta").classList.add("active");
         }
 
