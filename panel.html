@@ -36,8 +36,8 @@
         <div class="tab-content" id="tab-nuevo">
             <form id="formNuevo">
                 <!-- PASO 1: DATOS PERSONALES -->
-                <div id="paso1_datosPersonales" class="seccion-formulario">
-                    <h3>Paso 1: Datos Personales</h3>
+                <div id="paso1_datosPersonales">
+                    <h3>Datos Personales</h3>
                     <div class="form-row">
                         <div class="form-group"><label for="nNombre">Nombre Completo</label><input type="text" id="nNombre" placeholder="Ej: Ana Pérez" required></div>
                         <div class="form-group"><label for="nRut">RUT</label><input type="text" id="nRut" placeholder="Ej: 11.222.333-4" required></div>
@@ -48,13 +48,13 @@
                     </div>
                     <div class="form-group"><label for="nEmail">Email</label><input type="email" id="nEmail" placeholder="correo@ejemplo.com" required></div>
                     
-                    <button type="button" class="btn-primary" id="btnSiguientePaso">SIGUIENTE: DATOS MÉDICOS</button>
+                    <button type="button" class="btn-primary" id="btnSiguientePaso">SIGUIENTE: DATOS MÉDICOS ➔</button>
                 </div>
 
                 <!-- PASO 2: DATOS MÉDICOS (Oculto al inicio) -->
-                <div id="paso2_datosMedicos" class="seccion-formulario" style="display: none;">
-                    <h3>Paso 2: Antecedentes Médicos</h3>
-                    <p style="font-size: 13px; color: #777; margin-bottom: 20px;">Información altamente sensible. Maneje con confidencialidad.</p>
+                <div id="paso2_datosMedicos" style="display: none;">
+                    <h3>Antecedentes Médicos y Estéticos</h3>
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nPiel">Tipo de Piel</label>
@@ -67,23 +67,60 @@
                                 <option value="Sensible">Sensible</option>
                             </select>
                         </div>
-                        <div class="form-group"><label for="nAlergias">Alergias (Si no tiene, escriba "Ninguna")</label><input type="text" id="nAlergias" placeholder="Ej: Penicilina..." required></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="nMorbidos">Antecedentes Mórbidos (Enfermedades previas)</label>
-                        <textarea id="nMorbidos" rows="2" placeholder="Ej: Diabetes, Hipertensión, Ninguno..."></textarea>
+                        <div class="form-group">
+                            <label for="nFototipo">Fototipo (Fitzpatrick)</label>
+                            <select id="nFototipo" required>
+                                <option value="" disabled selected>Seleccione...</option>
+                                <option value="I">I - Muy clara</option>
+                                <option value="II">II - Clara</option>
+                                <option value="III">III - Media</option>
+                                <option value="IV">IV - Oliva</option>
+                                <option value="V">V - Oscura</option>
+                                <option value="VI">VI - Muy oscura</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="seccion-consentimiento">
-                        <input type="checkbox" id="nConsentimiento" required>
-                        <label for="nConsentimiento">
-                            Autorizo el tratamiento de mis datos sensibles (salud, piel, alergias) para fines de diagnóstico y tratamiento estético, conforme a la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.
+                    <div class="form-group">
+                        <label for="nAlergias">Alergias (Medicamentos, cosméticos, etc.)</label>
+                        <input type="text" id="nAlergias" placeholder="Si no tiene, escriba 'Ninguna'" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nMorbidos">Antecedentes Mórbidos (Enfermedades)</label>
+                        <textarea id="nMorbidos" rows="2" placeholder="Ej: Diabetes, Hipertensión, Rosácea..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nMedicamentos">Medicamentos actuales</label>
+                        <input type="text" id="nMedicamentos" placeholder="Ej: Isotretinoína, anticoagulantes... Si no toma, escriba 'Ninguno'">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nEmbarazo">¿Embarazo o Lactancia?</label>
+                            <select id="nEmbarazo" required>
+                                <option value="No">No</option>
+                                <option value="Sí">Sí</option>
+                                <option value="No aplica">No aplica</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nCirugias">Cirugías Estéticas Previas</label>
+                            <input type="text" id="nCirugias" placeholder="Si no, escriba 'Ninguna'">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; margin-top: 15px; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+                        <input type="checkbox" id="nConsentimiento" required style="width: auto; margin-top: 4px; accent-color: #d4af37;">
+                        <label for="nConsentimiento" style="font-size: 12px; color: #555; line-height: 1.4; text-transform: none; letter-spacing: 0;">
+                            Autorizo el tratamiento de mis datos sensibles (salud, piel, alergias) para fines de diagnóstico y tratamiento estético, conforme a la <a href="privacidad.html" target="_blank" style="color: #8e24aa;">Política de Privacidad</a>.
                         </label>
                     </div>
 
-                    <div style="display: flex; gap: 10px;">
-                        <button type="button" class="btn-cancelar" id="btnVolverPaso1" style="flex: 1;">Volver</button>
-                        <button type="submit" class="btn-primary" style="flex: 2;">GUARDAR Y ABRIR FICHA CLÍNICA</button>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="button" class="btn-cancelar" id="btnVolverPaso1" style="flex: 1;">⬅ Volver</button>
+                        <button type="submit" class="btn-primary" style="flex: 2;">GUARDAR Y ABRIR FICHA</button>
                     </div>
                     <div class="success-msg" id="msgNuevo" style="margin-top: 15px;"></div>
                 </div>
@@ -96,33 +133,38 @@
         </div>
     </div>
 
-    <!-- VISTA DE FICHA Y DIAGNÓSTICO -->
+    <!-- VISTA DE FICHA Y DIAGNÓSTICO (Mismo estilo de tu diseño original) -->
     <div class="vista-ficha" id="vistaFichaCompleta">
         <div class="ficha-papel">
             <div class="ficha-header-print">
                 <div class="ficha-logo">GLOW UP <span>BOUTIQUE</span></div>
-                <div class="ficha-titulo"><h2>FICHA CLÍNICA</h2></div>
+                <div class="ficha-titulo"><h2>DIAGNÓSTICO FACIAL</h2></div>
                 <div class="ficha-logo">GLOW UP <span>BOUTIQUE</span></div>
             </div>
             
             <form id="formDiagnosticoAnesi">
                 <input type="hidden" id="diagRut"><input type="hidden" id="diagId">
                 
+                <!-- SECCIÓN 1: DATOS DEL CLIENTE (Igual a tu diseño) -->
                 <div class="seccion-ficha">
                     <h4>1. DATOS DEL PACIENTE</h4>
                     <div class="ficha-grid">
                         <div class="ficha-item"><span>Nombre:</span><input type="text" id="dNombre" readonly class="input-print"></div>
                         <div class="ficha-item"><span>Teléfono:</span><input type="text" id="dTelefono" readonly class="input-print"></div>
                         <div class="ficha-item"><span>Tipo de Piel:</span><input type="text" id="dPiel" readonly class="input-print"></div>
-                        <div class="ficha-item"><span>Alergias:</span><input type="text" id="dAlergias" readonly class="input-print"></div>
+                        <div class="ficha-item"><span>Fototipo:</span><input type="text" id="dFototipo" readonly class="input-print"></div>
+                        <div class="ficha-item" style="grid-column: 1 / -1;"><span>Alergias:</span><input type="text" id="dAlergias" readonly class="input-print"></div>
+                        <div class="ficha-item" style="grid-column: 1 / -1;"><span>Antecedentes Mórbidos / Medicamentos:</span><input type="text" id="dMorbidos" readonly class="input-print"></div>
                     </div>
                 </div>
 
-                <div class="seccion-ficha" style="background-color: #fafafa; padding: 20px; border-radius: 10px; border-left: 4px solid #d4af37;">
-                    <h4>2. EVALUACIÓN ESTÉTICA DE LA SESIÓN</h4>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label style="font-size: 12px; font-weight: bold; color: #555; text-transform: uppercase;">Tipo de Piel Actual:</label>
-                        <select id="diagTipoPiel" class="input-print" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px;" required>
+                <!-- SECCIÓN 2: EVALUACIÓN (Mismo estilo de inputs subrayados) -->
+                <div class="seccion-ficha">
+                    <h4>2. EVALUACIÓN DE LA SESIÓN</h4>
+                    
+                    <div class="form-group-inline">
+                        <label>Tipo de Piel Observada Hoy:</label>
+                        <select id="diagTipoPiel" class="input-print" required>
                             <option value="Normal">Normal</option>
                             <option value="Seca">Seca</option>
                             <option value="Grasa">Grasa</option>
@@ -130,9 +172,10 @@
                             <option value="Sensible">Sensible</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label style="font-size: 12px; font-weight: bold; color: #555; text-transform: uppercase;">Observaciones / Tratamiento:</label>
-                        <textarea id="diagObservaciones" class="input-print" rows="4" placeholder="Detalles del diagnóstico, productos usados, recomendaciones..." style="width: 100%; margin-top: 5px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                    
+                    <div class="form-group-inline" style="align-items: flex-start;">
+                        <label style="margin-top: 10px;">Observaciones / Tratamiento:</label>
+                        <textarea id="diagObservaciones" class="input-print" rows="4" placeholder="Detalles del diagnóstico, productos usados, recomendaciones..."></textarea>
                     </div>
                 </div>
 
