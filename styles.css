@@ -210,3 +210,53 @@ input[type="checkbox"] { accent-color: #d4af37; width: 16px; height: 16px; curso
     .ficha-header { flex-direction: column; }
     .ficha-acciones-header { width: 100%; }
 }
+/* Estilos para el Asistente por Pasos */
+.seccion-formulario {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    animation: fadeIn 0.4s ease;
+}
+
+.seccion-formulario h3 {
+    color: #111;
+    font-size: 18px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.seccion-consentimiento {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #d4af37;
+    margin-bottom: 25px;
+}
+
+.seccion-consentimiento input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: #d4af37;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.seccion-consentimiento label {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+}
