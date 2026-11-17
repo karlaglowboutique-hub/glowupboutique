@@ -82,12 +82,9 @@ button { transition: all 0.3s ease; font-family: 'Segoe UI', Tahoma, Geneva, Ver
 .tab-content.active { display: block; }
 
 /* =========================================
-   ASISTENTE POR PASOS (NUEVO)
+   ASISTENTE POR PASOS
    ========================================= */
 #paso1_datosPersonales, #paso2_datosMedicos { animation: fadeIn 0.4s ease; }
-.seccion-formulario { background: #fff; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px dashed #e0e0e0; }
-.seccion-formulario:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.seccion-formulario h3 { color: #111; font-size: 18px; margin-bottom: 20px; font-family: 'Times New Roman', Times, serif; letter-spacing: 1px; }
 
 /* =========================================
    FICHA BASE DEL CLIENTE
@@ -109,7 +106,25 @@ button { transition: all 0.3s ease; font-family: 'Segoe UI', Tahoma, Geneva, Ver
 /* =========================================
    VISTA FICHA COMPLETA (DIAGNÓSTICO ANESI)
    ========================================= */
-.vista-ficha { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 1000; overflow-y: auto; padding: 40px 15px; }
+/* ESTA ES LA REGLA CLAVE: Por defecto está oculta (display: none) */
+.vista-ficha { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: #111; 
+    z-index: 1000; 
+    overflow-y: auto; 
+    padding: 40px 15px; 
+}
+
+/* ESTA ES LA REGLA QUE LA MUESTRA CUANDO TIENE LA CLASE .active */
+.vista-ficha.active {
+    display: block !important;
+}
+
 .ficha-papel { background: #fff; max-width: 850px; margin: 0 auto; padding: 60px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border-radius: 4px; position: relative; border-top: 5px solid #d4af37;}
 .ficha-header-print { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #111; padding-bottom: 25px; margin-bottom: 45px; }
 .ficha-logo { font-family: 'Times New Roman', Times, serif; font-size: 20px; color: #111; font-weight: bold; letter-spacing: 2px; }
