@@ -82,8 +82,28 @@
                 <div class="seccion-ficha">
                     <h4>DATOS DEL CLIENTE</h4>
                     <div class="form-group-inline"><label>Nombre:</label><input type="text" id="dNombre" readonly class="input-print"></div>
-                    <div class="form-group-inline"><label>Tel:</label><input type="text" id="dTelefono" readonly class="input-print"></div>
+                    <div class="form-group-inline"><label>Teléfono:</label><input type="text" id="dTelefono" readonly class="input-print"></div>
                 </div>
+
+                <!-- CAMPOS AGREGADOS PARA EL DIAGNÓSTICO -->
+                <div class="seccion-ficha">
+                    <h4>EVALUACIÓN CLÍNICA</h4>
+                    <div class="form-group-inline">
+                        <label>Tipo de Piel:</label>
+                        <select id="diagTipoPiel" class="input-print" required>
+                            <option value="Normal">Normal</option>
+                            <option value="Seca">Seca</option>
+                            <option value="Grasa">Grasa</option>
+                            <option value="Mixta">Mixta</option>
+                            <option value="Sensible">Sensible</option>
+                        </select>
+                    </div>
+                    <div class="form-group-inline">
+                        <label>Observaciones / Alergias:</label>
+                        <textarea id="diagObservaciones" class="input-print" rows="3" placeholder="Detalles del diagnóstico..."></textarea>
+                    </div>
+                </div>
+
                 <div class="acciones-ficha">
                     <button type="button" class="btn-cancelar" id="btnCerrarFicha">Cancelar</button>
                     <button type="submit" class="btn-primary">Guardar Diagnóstico</button>
