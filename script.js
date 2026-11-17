@@ -106,13 +106,18 @@ if (document.getElementById("panelView")) {
                 edad: document.getElementById("nEdad").value,
                 telefono: document.getElementById("nTelefono").value.trim(), 
                 email: document.getElementById("nEmail").value.trim(),
-                piel: document.getElementById("nPiel").value, 
-                fototipo: document.getElementById("nFototipo").value,
+                
+                // Datos Médicos
                 alergias: document.getElementById("nAlergias").value.trim(), 
                 morbidos: document.getElementById("nMorbidos").value.trim(),
                 medicamentos: document.getElementById("nMedicamentos").value.trim(),
                 embarazo: document.getElementById("nEmbarazo").value,
+                
+                // Datos Estéticos
+                piel: document.getElementById("nPiel").value, 
+                fototipo: document.getElementById("nFototipo").value,
                 cirugias: document.getElementById("nCirugias").value.trim(),
+                
                 consentimiento: true,
                 fechaConsentimiento: new Date().toISOString(),
                 atenciones: []
@@ -155,17 +160,16 @@ if (document.getElementById("panelView")) {
         window.abrirFichaAnesi = (rut) => {
             const c = clientes[rut];
             document.getElementById("diagRut").value = rut;
+            
+            // Llenar datos en la ficha
             document.getElementById("dNombre").value = c.nombre;
             document.getElementById("dTelefono").value = c.telefono || "";
             document.getElementById("dPiel").value = c.piel || "No registrada";
             document.getElementById("dFototipo").value = c.fototipo || "No registrado";
             document.getElementById("dAlergias").value = c.alergias || "Ninguna";
-            
-            let antecedentesTexto = c.morbidos || "Ninguno";
-            if (c.medicamentos && c.medicamentos !== "Ninguno") {
-                antecedentesTexto += ` | Medicamentos: ${c.medicamentos}`;
-            }
-            document.getElementById("dMorbidos").value = antecedentesTexto;
+            document.getElementById("dMorbidos").value = c.morbidos || "Ninguna";
+            document.getElementById("dMedicamentos").value = c.medicamentos || "Ninguno";
+            document.getElementById("dCirugias").value = c.cirugias || "Ninguna";
             
             document.getElementById("diagTipoPiel").value = c.piel || "Normal";
             document.getElementById("diagObservaciones").value = "";
