@@ -21,7 +21,6 @@
             <button class="tab-btn" data-tab="nuevo">Ingresar Cliente Nuevo</button>
         </div>
 
-        <!-- PESTAÑA: BUSCAR CLIENTE -->
         <div class="tab-content active" id="tab-buscar">
             <div class="form-group" style="max-width: 400px; margin: 0 auto 20px auto;">
                 <label for="buscarRut" style="text-align: center;">Ingrese RUT del cliente</label>
@@ -32,7 +31,6 @@
             <div id="contenedorFicha"></div>
         </div>
 
-        <!-- PESTAÑA: NUEVO CLIENTE (ASISTENTE POR PASOS) -->
         <div class="tab-content" id="tab-nuevo">
             <form id="formNuevo">
                 <!-- PASO 1: DATOS PERSONALES -->
@@ -51,7 +49,7 @@
                     <button type="button" class="btn-primary" id="btnSiguientePaso">SIGUIENTE: DATOS MÉDICOS ➔</button>
                 </div>
 
-                <!-- PASO 2: DATOS MÉDICOS (Oculto al inicio) -->
+                <!-- PASO 2: DATOS MÉDICOS -->
                 <div id="paso2_datosMedicos" style="display: none;">
                     <h3>Paso 2: Antecedentes Médicos y Estéticos</h3>
                     
@@ -63,7 +61,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nMorbidos">Enfermedades Previas / Actuales</label>
-                            <input type="text" id="nMorbidos" placeholder="Ej: Diabetes, Hipertensión... Si no, 'Ninguna'">
+                            <input type="text" id="nMorbidos" placeholder="Ej: Diabetes... Si no, 'Ninguna'">
                         </div>
                         <div class="form-group">
                             <label for="nMedicamentos">Medicamentos actuales</label>
@@ -115,7 +113,7 @@
                     <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; margin-top: 15px; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
                         <input type="checkbox" id="nConsentimiento" required style="width: auto; margin-top: 4px; accent-color: #d4af37;">
                         <label for="nConsentimiento" style="font-size: 12px; color: #555; line-height: 1.4; text-transform: none; letter-spacing: 0;">
-                            Autorizo el tratamiento de mis datos sensibles (salud, piel, alergias) para fines de diagnóstico y tratamiento estético, conforme a la <a href="privacidad.html" target="_blank" style="color: #8e24aa;">Política de Privacidad</a>.
+                            Autorizo el tratamiento de mis datos sensibles...
                         </label>
                     </div>
 
@@ -144,7 +142,7 @@
             </div>
             
             <form id="formDiagnosticoAnesi">
-                <input type="hidden" id="diagRut"><input type="hidden" id="diagId">
+                <input type="hidden" id="diagRut">
                 
                 <div class="seccion-ficha">
                     <h4>1. DATOS DEL PACIENTE</h4>
@@ -182,7 +180,7 @@
                     </div>
                     <div class="form-group-inline" style="align-items: flex-start;">
                         <label style="margin-top: 10px;">Observaciones / Tratamiento:</label>
-                        <textarea id="diagObservaciones" class="input-print" rows="4" placeholder="Detalles del diagnóstico, productos usados, recomendaciones..."></textarea>
+                        <textarea id="diagObservaciones" class="input-print" rows="4" placeholder="Detalles del diagnóstico..."></textarea>
                     </div>
                 </div>
 
