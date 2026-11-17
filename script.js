@@ -62,13 +62,34 @@ if (document.getElementById("panelView")) {
 
         document.getElementById("btnLogout").addEventListener("click", async () => { await signOut(auth); window.location.href = "index.html"; });
 
-        // Manejo de Pestañas
+        // Manejo de Pestañas Principales
         document.querySelectorAll(".tab-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
                 document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
                 btn.classList.add("active"); document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
             });
+        });
+
+        // --- LÓGICA DEL ASISTENTE (PASO 1 Y PASO 2) ---
+        const paso1 = document.getElementById("paso1_datosPersonales");
+        const paso2 = document.getElementById("paso2_datosMedicos");
+
+        document.getElementById("btnSiguientePaso").addEventListener("click", () => {
+            // Validar que los campos del paso 1 estén llenos antes de avanzar
+            if (!document.getElementById("nNombre").checkValidity() || !document.getElementById("nRut").checkValidity() || 
+                !document.getElementById("nEdad").checkValidity() || !document.getElementById("nTelefono").checkValidity() || 
+                !document.getElementById("nEmail").checkValidity()) {
+                document.getElementById("formNuevo").reportValidity();
+                return;
+            }
+            paso1.style.display = "none";
+            paso2.style.display = "block";
+        });
+
+        document.getElementById("btnVolverPaso1").addEventListener("click", () => {
+            paso2.style.display = "none";
+            paso1.style.display = "block";
         });
 
         // Buscar Cliente
@@ -80,7 +101,7 @@ if (document.getElementById("panelView")) {
             else { document.getElementById("errorBuscar").textContent = "No encontrado."; contenedorFicha.innerHTML = ""; }
         });
 
-        // Ingresar Cliente Nuevo
+        // Guardar Cliente Nuevo (Al final del Paso 2)
         document.getElementById("formNuevo").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = limpiarRut(document.getElementById("nRut").value);
@@ -93,6 +114,7 @@ if (document.getElementById("panelView")) {
                 email: document.getElementById("nEmail").value.trim(),
                 piel: document.getElementById("nPiel").value, 
                 alergias: document.getElementById("nAlergias").value.trim(), 
+                morbidos: document.getElementById("nMorbidos").value.trim(), // Nuevo campo
                 consentimiento: true,
                 fechaConsentimiento: new Date().toISOString(),
                 atenciones: []
@@ -100,8 +122,17 @@ if (document.getElementById("panelView")) {
             
             await guardarClienteNube(rut, nuevo);
             clientes[rut] = nuevo; clientes[rut].rut = rut;
-            renderListaClientes(); document.getElementById("formNuevo").reset();
-            document.getElementById("msgNuevo").textContent = "✅ Guardado en la nube.";
+            
+            // Limpiar formulario y volver al paso 1
+            document.getElementById("formNuevo").reset();
+            paso2.style.display = "none";
+            paso1.style.display = "block";
+            
+            renderListaClientes();
+            
+            // ¡MAGIA! Abrir automáticamente la ficha clínica para el diagnóstico
+            mostrarFichaCliente(nuevo);
+            window.abrirFichaAnesi(rut);
         });
 
         // Renderizar Lista
@@ -117,28 +148,34 @@ if (document.getElementById("panelView")) {
             });
         }
 
-        // Mostrar Ficha del Cliente
+        // Mostrar Ficha Resumida en pantalla (Buscar)
         function mostrarFichaCliente(cliente) {
             let html = `<div class="ficha"><h3>Ficha: ${cliente.nombre}</h3><p>RUT: ${formatearRut(cliente.rut)}</p>
-                        <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}')">➕ Nuevo Diagnóstico</button>
+                        <p><strong>Alergias:</strong> ${cliente.alergias}</p>
+                        <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}')">➕ Nuevo Diagnóstico / Tratamiento</button>
                         <button class="btn-primary" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')">🗑️ Borrar Cliente</button></div>`;
             contenedorFicha.innerHTML = html;
         }
 
-        // Abrir Modal de Diagnóstico
+        // Abrir Modal de Diagnóstico (La ficha clínica completa)
         window.abrirFichaAnesi = (rut) => {
+            const c = clientes[rut];
             document.getElementById("diagRut").value = rut;
-            document.getElementById("dNombre").value = clientes[rut].nombre;
-            document.getElementById("dTelefono").value = clientes[rut].telefono || "";
-            // Limpiamos los campos del formulario antes de abrir
-            document.getElementById("diagTipoPiel").value = "Normal";
+            document.getElementById("dNombre").value = c.nombre;
+            document.getElementById("dTelefono").value = c.telefono || "";
+            document.getElementById("dPiel").value = c.piel || "No registrada";
+            document.getElementById("dAlergias").value = c.alergias || "Ninguna";
+            
+            // Limpiamos los campos del formulario de evaluación
+            document.getElementById("diagTipoPiel").value = c.piel || "Normal"; // Sugerimos su tipo base
             document.getElementById("diagObservaciones").value = "";
+            
             document.getElementById("vistaFichaCompleta").style.display = "block";
         };
 
         document.getElementById("btnCerrarFicha").onclick = () => document.getElementById("vistaFichaCompleta").style.display = "none";
 
-        // Guardar Diagnóstico (AHORA LEE LOS CAMPOS NUEVOS)
+        // Guardar Diagnóstico Estético
         document.getElementById("formDiagnosticoAnesi").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = document.getElementById("diagRut").value;
