@@ -5,6 +5,10 @@ const db = window.firebaseDB;
 const auth = window.firebaseAuth;
 let clientes = {}; 
 
+// --- CONFIGURACIÓN DE SEGURIDAD ---
+// Reemplaza esto con el UID real del programador (Diego)
+const UID_PROGRAMADOR = 'E19k5YcMkoRksWlOBj0c26PT7zQ2'; 
+
 function limpiarRut(rut) { return rut.replace(/\./g, '').trim(); }
 function formatearRut(rut) {
     if (rut.length <= 1) return rut;
@@ -23,7 +27,7 @@ async function cargarClientesNube(callback) {
 async function guardarClienteNube(rut, datos) { await setDoc(doc(db, "clientes", rut), datos); }
 async function eliminarClienteNube(rut) { await deleteDoc(doc(db, "clientes", rut)); }
 
-// Atajo Teclado
+// Atajo Teclado para Programador
 let keysPressed = "";
 document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
@@ -32,7 +36,7 @@ document.addEventListener("keydown", (e) => {
     if (keysPressed.includes("programador")) { keysPressed = ""; window.location.href = "programador.html"; }
 });
 
-// ================= LOGIN =================
+// ================= LOGIN PRINCIPAL =================
 if (document.getElementById("loginForm")) {
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -58,6 +62,7 @@ if (document.getElementById("panelView")) {
 
         document.getElementById("btnLogout").addEventListener("click", async () => { await signOut(auth); window.location.href = "index.html"; });
 
+        // Manejo de Pestañas
         document.querySelectorAll(".tab-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -66,6 +71,7 @@ if (document.getElementById("panelView")) {
             });
         });
 
+        // Buscar Cliente
         document.getElementById("btnBuscar").addEventListener("click", () => {
             const rut = limpiarRut(document.getElementById("buscarRut").value);
             if (!rut) return;
@@ -74,6 +80,7 @@ if (document.getElementById("panelView")) {
             else { document.getElementById("errorBuscar").textContent = "No encontrado."; contenedorFicha.innerHTML = ""; }
         });
 
+        // Ingresar Cliente Nuevo
         document.getElementById("formNuevo").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = limpiarRut(document.getElementById("nRut").value);
@@ -97,6 +104,7 @@ if (document.getElementById("panelView")) {
             document.getElementById("msgNuevo").textContent = "✅ Guardado en la nube.";
         });
 
+        // Renderizar Lista
         function renderListaClientes() {
             const list = document.getElementById("listaClientes");
             list.innerHTML = Object.keys(clientes).length === 0 ? '<div class="lista-vacia">Sin clientes.</div>' : "";
@@ -109,6 +117,7 @@ if (document.getElementById("panelView")) {
             });
         }
 
+        // Mostrar Ficha del Cliente
         function mostrarFichaCliente(cliente) {
             let html = `<div class="ficha"><h3>Ficha: ${cliente.nombre}</h3><p>RUT: ${formatearRut(cliente.rut)}</p>
                         <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}')">➕ Nuevo Diagnóstico</button>
@@ -116,25 +125,40 @@ if (document.getElementById("panelView")) {
             contenedorFicha.innerHTML = html;
         }
 
+        // Abrir Modal de Diagnóstico
         window.abrirFichaAnesi = (rut) => {
             document.getElementById("diagRut").value = rut;
             document.getElementById("dNombre").value = clientes[rut].nombre;
+            document.getElementById("dTelefono").value = clientes[rut].telefono || "";
             document.getElementById("vistaFichaCompleta").style.display = "block";
         };
 
         document.getElementById("btnCerrarFicha").onclick = () => document.getElementById("vistaFichaCompleta").style.display = "none";
 
+        // Guardar Diagnóstico (CORREGIDO PARA GUARDAR DATOS)
         document.getElementById("formDiagnosticoAnesi").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = document.getElementById("diagRut").value;
             const c = clientes[rut];
             if(!c.atenciones) c.atenciones = [];
-            c.atenciones.push({ id: Date.now().toString(), fecha: new Date().toISOString().split('T')[0] });
+            
+            // Capturamos los datos del formulario de diagnóstico
+            // Nota: Si tienes más inputs en tu HTML (ej. observaciones), agrégalos aquí.
+            const nuevoDiagnostico = { 
+                id: Date.now().toString(), 
+                fecha: new Date().toISOString().split('T')[0],
+                nombrePaciente: document.getElementById('dNombre').value,
+                telefonoPaciente: document.getElementById('dTelefono').value
+            };
+            
+            c.atenciones.push(nuevoDiagnostico);
             await guardarClienteNube(rut, c);
+            
             document.getElementById("vistaFichaCompleta").style.display = "none";
             mostrarFichaCliente(c);
         });
 
+        // Modal Eliminar
         window.abrirModalEliminar = (rut, id, tipo) => {
             rutAEliminar = rut; tipoEliminacion = tipo;
             document.getElementById("modalEliminar").classList.add("active");
@@ -152,10 +176,11 @@ if (document.getElementById("panelView")) {
     }
 }
 
-// ================= PANEL PROGRAMADOR =================
+// ================= PANEL PROGRAMADOR (CORREGIDO CON SEGURIDAD) =================
 if (document.getElementById("loginProgBox")) {
     onAuthStateChanged(auth, (user) => {
-        if (user) {
+        // Verifica que esté logueado Y que sea el UID del programador
+        if (user && user.uid === UID_PROGRAMADOR) {
             document.getElementById("loginProgBox").style.display = "none";
             document.getElementById("dashboardProg").style.display = "block";
             cargarClientesNube(() => renderListaClientesProg());
@@ -170,9 +195,14 @@ if (document.getElementById("loginProgBox")) {
     document.getElementById("formLoginProg").addEventListener("submit", async (e) => {
         e.preventDefault();
         try {
-            await signInWithEmailAndPassword(auth, document.getElementById("pEmail").value.trim(), document.getElementById("pPass").value);
+            const userCredential = await signInWithEmailAndPassword(auth, document.getElementById("pEmail").value.trim(), document.getElementById("pPass").value);
+            // Validación extra: Si no es el UID correcto, lo saca
+            if (userCredential.user.uid !== UID_PROGRAMADOR) {
+                document.getElementById("errorProg").textContent = "Acceso Denegado. No eres el programador autorizado.";
+                await signOut(auth);
+            }
         } catch (error) {
-            document.getElementById("errorProg").textContent = "Acceso Denegado.";
+            document.getElementById("errorProg").textContent = "Acceso Denegado. Correo o contraseña incorrectos.";
         }
     });
 
