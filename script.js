@@ -126,12 +126,10 @@ if (document.getElementById("panelView")) {
             paso1.style.display = "block";
             
             renderListaClientes();
-            
             mostrarFichaCliente(nuevo);
-            abrirFichaAnesi(rut); // Abre automáticamente la ficha tras guardar
+            abrirFichaAnesi(rut); 
         });
 
-        // Renderizar Lista
         function renderListaClientes() {
             const list = document.getElementById("listaClientes");
             list.innerHTML = Object.keys(clientes).length === 0 ? '<div class="lista-vacia">Sin clientes.</div>' : "";
@@ -144,8 +142,7 @@ if (document.getElementById("panelView")) {
             });
         }
 
-        // CORRECCIÓN DEFINITIVA AQUÍ:
-        // Usamos clases en lugar de IDs para evitar problemas con los puntos del RUT
+        // VENTANA EMERGENTE (CORREGIDA)
         function mostrarFichaCliente(cliente) {
             let html = `
             <div class="ficha">
@@ -163,18 +160,17 @@ if (document.getElementById("panelView")) {
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
-                    <button class="btn-primary btn-abrir-ficha" style="flex: 1;">➕ Ver Diagnóstico / Tratamiento</button>
-                    <button class="btn-primary btn-borrar-ficha" style="flex: 1; background: #e53935 !important; color: #fff !important; border: none !important;">🗑️ Borrar Cliente</button>
+                    <button class="btn-primary" id="btnAbrirFicha" style="flex: 1;">➕ Ver Diagnóstico / Tratamiento</button>
+                    <button class="btn-primary" id="btnBorrarFicha" style="flex: 1; background: #e53935 !important; color: #fff !important; border: none !important;">🗑️ Borrar Cliente</button>
                 </div>
             </div>`;
             contenedorFicha.innerHTML = html;
 
-            // Asignar eventos a los botones recién creados
-            document.querySelector(".btn-abrir-ficha").onclick = () => abrirFichaAnesi(cliente.rut);
-            document.querySelector(".btn-borrar-ficha").onclick = () => abrirModalEliminar(cliente.rut, null, 'cliente');
+            // Asignar eventos con IDs fijos
+            document.getElementById("btnAbrirFicha").onclick = () => abrirFichaAnesi(cliente.rut);
+            document.getElementById("btnBorrarFicha").onclick = () => abrirModalEliminar(cliente.rut, null, 'cliente');
         }
 
-        // Función para abrir la ventana de la ficha completa
         function abrirFichaAnesi(rut) {
             const c = clientes[rut];
             if (!c) return;
@@ -192,12 +188,14 @@ if (document.getElementById("panelView")) {
             document.getElementById("diagTipoPiel").value = c.piel || "Normal";
             document.getElementById("diagObservaciones").value = "";
             
-            document.getElementById("vistaFichaCompleta").style.display = "block";
+            // AQUÍ ESTÁ EL CAMBIO CLAVE: Usamos la clase .active
+            document.getElementById("vistaFichaCompleta").classList.add("active");
         }
 
-        document.getElementById("btnCerrarFicha").onclick = () => document.getElementById("vistaFichaCompleta").style.display = "none";
+        document.getElementById("btnCerrarFicha").onclick = () => {
+            document.getElementById("vistaFichaCompleta").classList.remove("active");
+        };
 
-        // GUARDAR DIAGNÓSTICO
         document.getElementById("formDiagnosticoAnesi").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = document.getElementById("diagRut").value;
@@ -214,11 +212,10 @@ if (document.getElementById("panelView")) {
             c.atenciones.push(nuevoDiagnostico);
             await guardarClienteNube(rut, c);
             
-            document.getElementById("vistaFichaCompleta").style.display = "none";
+            document.getElementById("vistaFichaCompleta").classList.remove("active");
             mostrarFichaCliente(c);
         });
 
-        // MODAL ELIMINAR
         function abrirModalEliminar(rut, id, tipo) {
             rutAEliminar = rut; tipoEliminacion = tipo;
             document.getElementById("modalEliminar").classList.add("active");
