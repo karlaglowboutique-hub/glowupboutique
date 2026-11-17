@@ -106,18 +106,13 @@ if (document.getElementById("panelView")) {
                 edad: document.getElementById("nEdad").value,
                 telefono: document.getElementById("nTelefono").value.trim(), 
                 email: document.getElementById("nEmail").value.trim(),
-                
-                // Datos Médicos
                 alergias: document.getElementById("nAlergias").value.trim(), 
                 morbidos: document.getElementById("nMorbidos").value.trim(),
                 medicamentos: document.getElementById("nMedicamentos").value.trim(),
                 embarazo: document.getElementById("nEmbarazo").value,
-                
-                // Datos Estéticos
                 piel: document.getElementById("nPiel").value, 
                 fototipo: document.getElementById("nFototipo").value,
                 cirugias: document.getElementById("nCirugias").value.trim(),
-                
                 consentimiento: true,
                 fechaConsentimiento: new Date().toISOString(),
                 atenciones: []
@@ -132,11 +127,11 @@ if (document.getElementById("panelView")) {
             
             renderListaClientes();
             
-            // Abrir ficha clínica automáticamente
             mostrarFichaCliente(nuevo);
-            window.abrirFichaAnesi(rut);
+            abrirFichaAnesi(rut); // Abre automáticamente la ficha tras guardar
         });
 
+        // Renderizar Lista
         function renderListaClientes() {
             const list = document.getElementById("listaClientes");
             list.innerHTML = Object.keys(clientes).length === 0 ? '<div class="lista-vacia">Sin clientes.</div>' : "";
@@ -149,19 +144,46 @@ if (document.getElementById("panelView")) {
             });
         }
 
+        // Mostrar Ficha Resumida (CORREGIDO: Asigna eventos con JS, no inline)
         function mostrarFichaCliente(cliente) {
-            let html = `<div class="ficha"><h3>Ficha: ${cliente.nombre}</h3><p>RUT: ${formatearRut(cliente.rut)}</p>
-                        <p style="margin-top: 10px;"><strong>Alergias:</strong> ${cliente.alergias}</p>
-                        <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}')">➕ Nuevo Diagnóstico / Tratamiento</button>
-                        <button class="btn-primary" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')">🗑️ Borrar Cliente</button></div>`;
+            let html = `
+            <div class="ficha">
+                <div class="ficha-header">
+                    <div>
+                        <h3>Ficha: ${cliente.nombre}</h3>
+                        <p>RUT: ${formatearRut(cliente.rut)}</p>
+                    </div>
+                </div>
+                
+                <h4>Antecedentes Rápidos</h4>
+                <div class="ficha-grid">
+                    <div class="ficha-item"><span>Alergias:</span><strong>${cliente.alergias || 'Ninguna'}</strong></div>
+                    <div class="ficha-item"><span>Tipo de Piel:</span><strong>${cliente.piel || 'No registrada'}</strong></div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+                    <button class="btn-primary" id="btnAbrirFicha_${cliente.rut}" style="flex: 1;">➕ Ver Diagnóstico / Tratamiento</button>
+                    <button class="btn-primary" id="btnBorrarFicha_${cliente.rut}" style="flex: 1; background: #e53935 !important; color: #fff !important; border: none !important;">🗑️ Borrar Cliente</button>
+                </div>
+            </div>`;
             contenedorFicha.innerHTML = html;
+
+            // Asignar eventos a los botones generados dinámicamente
+            document.getElementById(`btnAbrirFicha_${cliente.rut}`).onclick = () => {
+                abrirFichaAnesi(cliente.rut);
+            };
+
+            document.getElementById(`btnBorrarFicha_${cliente.rut}`).onclick = () => {
+                abrirModalEliminar(cliente.rut, null, 'cliente');
+            };
         }
 
-        window.abrirFichaAnesi = (rut) => {
+        // Función para abrir la ventana de la ficha completa (Declarada globalmente)
+        function abrirFichaAnesi(rut) {
             const c = clientes[rut];
+            if (!c) return;
+
             document.getElementById("diagRut").value = rut;
-            
-            // Llenar datos en la ficha
             document.getElementById("dNombre").value = c.nombre;
             document.getElementById("dTelefono").value = c.telefono || "";
             document.getElementById("dPiel").value = c.piel || "No registrada";
@@ -175,10 +197,11 @@ if (document.getElementById("panelView")) {
             document.getElementById("diagObservaciones").value = "";
             
             document.getElementById("vistaFichaCompleta").style.display = "block";
-        };
+        }
 
         document.getElementById("btnCerrarFicha").onclick = () => document.getElementById("vistaFichaCompleta").style.display = "none";
 
+        // GUARDAR DIAGNÓSTICO
         document.getElementById("formDiagnosticoAnesi").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = document.getElementById("diagRut").value;
@@ -199,10 +222,11 @@ if (document.getElementById("panelView")) {
             mostrarFichaCliente(c);
         });
 
-        window.abrirModalEliminar = (rut, id, tipo) => {
+        // MODAL ELIMINAR
+        function abrirModalEliminar(rut, id, tipo) {
             rutAEliminar = rut; tipoEliminacion = tipo;
             document.getElementById("modalEliminar").classList.add("active");
-        };
+        }
 
         document.getElementById("btnCancelarEliminar").onclick = () => document.getElementById("modalEliminar").classList.remove("active");
         
