@@ -144,7 +144,8 @@ if (document.getElementById("panelView")) {
             });
         }
 
-        // Mostrar Ficha Resumida (CORREGIDO: Asigna eventos con JS, no inline)
+        // CORRECCIÓN DEFINITIVA AQUÍ:
+        // Usamos clases en lugar de IDs para evitar problemas con los puntos del RUT
         function mostrarFichaCliente(cliente) {
             let html = `
             <div class="ficha">
@@ -162,23 +163,18 @@ if (document.getElementById("panelView")) {
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
-                    <button class="btn-primary" id="btnAbrirFicha_${cliente.rut}" style="flex: 1;">➕ Ver Diagnóstico / Tratamiento</button>
-                    <button class="btn-primary" id="btnBorrarFicha_${cliente.rut}" style="flex: 1; background: #e53935 !important; color: #fff !important; border: none !important;">🗑️ Borrar Cliente</button>
+                    <button class="btn-primary btn-abrir-ficha" style="flex: 1;">➕ Ver Diagnóstico / Tratamiento</button>
+                    <button class="btn-primary btn-borrar-ficha" style="flex: 1; background: #e53935 !important; color: #fff !important; border: none !important;">🗑️ Borrar Cliente</button>
                 </div>
             </div>`;
             contenedorFicha.innerHTML = html;
 
-            // Asignar eventos a los botones generados dinámicamente
-            document.getElementById(`btnAbrirFicha_${cliente.rut}`).onclick = () => {
-                abrirFichaAnesi(cliente.rut);
-            };
-
-            document.getElementById(`btnBorrarFicha_${cliente.rut}`).onclick = () => {
-                abrirModalEliminar(cliente.rut, null, 'cliente');
-            };
+            // Asignar eventos a los botones recién creados
+            document.querySelector(".btn-abrir-ficha").onclick = () => abrirFichaAnesi(cliente.rut);
+            document.querySelector(".btn-borrar-ficha").onclick = () => abrirModalEliminar(cliente.rut, null, 'cliente');
         }
 
-        // Función para abrir la ventana de la ficha completa (Declarada globalmente)
+        // Función para abrir la ventana de la ficha completa
         function abrirFichaAnesi(rut) {
             const c = clientes[rut];
             if (!c) return;
