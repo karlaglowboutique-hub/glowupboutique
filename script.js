@@ -5,8 +5,6 @@ const db = window.firebaseDB;
 const auth = window.firebaseAuth;
 let clientes = {}; 
 
-// --- CONFIGURACIÓN DE SEGURIDAD ---
-// Reemplaza esto con tu UID real de programador (el tuyo, Diego)
 const UID_PROGRAMADOR = 'E19k5YcMkoRksWlOBj0c26PT7zQ2'; 
 
 function limpiarRut(rut) { return rut.replace(/\./g, '').trim(); }
@@ -15,9 +13,8 @@ function formatearRut(rut) {
     let cuerpo = rut.slice(0, -2); let dv = rut.slice(-2);
     return new Intl.NumberFormat('es-CL').format(cuerpo) + dv;
 }
-let rutAEliminar = null; let idAEliminar = null; let tipoEliminacion = null; 
+let rutAEliminar = null; let tipoEliminacion = null; 
 
-// Funciones Nube
 async function cargarClientesNube(callback) {
     const querySnapshot = await getDocs(collection(db, "clientes"));
     clientes = {};
@@ -27,7 +24,6 @@ async function cargarClientesNube(callback) {
 async function guardarClienteNube(rut, datos) { await setDoc(doc(db, "clientes", rut), datos); }
 async function eliminarClienteNube(rut) { await deleteDoc(doc(db, "clientes", rut)); }
 
-// Atajo Teclado
 let keysPressed = "";
 document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
@@ -62,7 +58,6 @@ if (document.getElementById("panelView")) {
 
         document.getElementById("btnLogout").addEventListener("click", async () => { await signOut(auth); window.location.href = "index.html"; });
 
-        // Manejo de Pestañas Principales
         document.querySelectorAll(".tab-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -71,12 +66,11 @@ if (document.getElementById("panelView")) {
             });
         });
 
-        // --- LÓGICA DEL ASISTENTE (PASO 1 Y PASO 2) ---
+        // LÓGICA DEL ASISTENTE
         const paso1 = document.getElementById("paso1_datosPersonales");
         const paso2 = document.getElementById("paso2_datosMedicos");
 
         document.getElementById("btnSiguientePaso").addEventListener("click", () => {
-            // Validar que los campos del paso 1 estén llenos antes de avanzar
             if (!document.getElementById("nNombre").checkValidity() || !document.getElementById("nRut").checkValidity() || 
                 !document.getElementById("nEdad").checkValidity() || !document.getElementById("nTelefono").checkValidity() || 
                 !document.getElementById("nEmail").checkValidity()) {
@@ -92,7 +86,7 @@ if (document.getElementById("panelView")) {
             paso1.style.display = "block";
         });
 
-        // Buscar Cliente
+        // BUSCAR CLIENTE
         document.getElementById("btnBuscar").addEventListener("click", () => {
             const rut = limpiarRut(document.getElementById("buscarRut").value);
             if (!rut) return;
@@ -101,7 +95,7 @@ if (document.getElementById("panelView")) {
             else { document.getElementById("errorBuscar").textContent = "No encontrado."; contenedorFicha.innerHTML = ""; }
         });
 
-        // Guardar Cliente Nuevo (Al final del Paso 2)
+        // GUARDAR CLIENTE NUEVO
         document.getElementById("formNuevo").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = limpiarRut(document.getElementById("nRut").value);
@@ -113,8 +107,12 @@ if (document.getElementById("panelView")) {
                 telefono: document.getElementById("nTelefono").value.trim(), 
                 email: document.getElementById("nEmail").value.trim(),
                 piel: document.getElementById("nPiel").value, 
+                fototipo: document.getElementById("nFototipo").value,
                 alergias: document.getElementById("nAlergias").value.trim(), 
-                morbidos: document.getElementById("nMorbidos").value.trim(), // Nuevo campo
+                morbidos: document.getElementById("nMorbidos").value.trim(),
+                medicamentos: document.getElementById("nMedicamentos").value.trim(),
+                embarazo: document.getElementById("nEmbarazo").value,
+                cirugias: document.getElementById("nCirugias").value.trim(),
                 consentimiento: true,
                 fechaConsentimiento: new Date().toISOString(),
                 atenciones: []
@@ -123,19 +121,17 @@ if (document.getElementById("panelView")) {
             await guardarClienteNube(rut, nuevo);
             clientes[rut] = nuevo; clientes[rut].rut = rut;
             
-            // Limpiar formulario y volver al paso 1
             document.getElementById("formNuevo").reset();
             paso2.style.display = "none";
             paso1.style.display = "block";
             
             renderListaClientes();
             
-            // ¡MAGIA! Abrir automáticamente la ficha clínica para el diagnóstico
+            // Abrir ficha clínica automáticamente
             mostrarFichaCliente(nuevo);
             window.abrirFichaAnesi(rut);
         });
 
-        // Renderizar Lista
         function renderListaClientes() {
             const list = document.getElementById("listaClientes");
             list.innerHTML = Object.keys(clientes).length === 0 ? '<div class="lista-vacia">Sin clientes.</div>' : "";
@@ -148,26 +144,30 @@ if (document.getElementById("panelView")) {
             });
         }
 
-        // Mostrar Ficha Resumida en pantalla (Buscar)
         function mostrarFichaCliente(cliente) {
             let html = `<div class="ficha"><h3>Ficha: ${cliente.nombre}</h3><p>RUT: ${formatearRut(cliente.rut)}</p>
-                        <p><strong>Alergias:</strong> ${cliente.alergias}</p>
+                        <p style="margin-top: 10px;"><strong>Alergias:</strong> ${cliente.alergias}</p>
                         <button class="btn-primary" onclick="abrirFichaAnesi('${cliente.rut}')">➕ Nuevo Diagnóstico / Tratamiento</button>
                         <button class="btn-primary" onclick="abrirModalEliminar('${cliente.rut}', null, 'cliente')">🗑️ Borrar Cliente</button></div>`;
             contenedorFicha.innerHTML = html;
         }
 
-        // Abrir Modal de Diagnóstico (La ficha clínica completa)
         window.abrirFichaAnesi = (rut) => {
             const c = clientes[rut];
             document.getElementById("diagRut").value = rut;
             document.getElementById("dNombre").value = c.nombre;
             document.getElementById("dTelefono").value = c.telefono || "";
             document.getElementById("dPiel").value = c.piel || "No registrada";
+            document.getElementById("dFototipo").value = c.fototipo || "No registrado";
             document.getElementById("dAlergias").value = c.alergias || "Ninguna";
             
-            // Limpiamos los campos del formulario de evaluación
-            document.getElementById("diagTipoPiel").value = c.piel || "Normal"; // Sugerimos su tipo base
+            let antecedentesTexto = c.morbidos || "Ninguno";
+            if (c.medicamentos && c.medicamentos !== "Ninguno") {
+                antecedentesTexto += ` | Medicamentos: ${c.medicamentos}`;
+            }
+            document.getElementById("dMorbidos").value = antecedentesTexto;
+            
+            document.getElementById("diagTipoPiel").value = c.piel || "Normal";
             document.getElementById("diagObservaciones").value = "";
             
             document.getElementById("vistaFichaCompleta").style.display = "block";
@@ -175,7 +175,6 @@ if (document.getElementById("panelView")) {
 
         document.getElementById("btnCerrarFicha").onclick = () => document.getElementById("vistaFichaCompleta").style.display = "none";
 
-        // Guardar Diagnóstico Estético
         document.getElementById("formDiagnosticoAnesi").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = document.getElementById("diagRut").value;
@@ -196,7 +195,6 @@ if (document.getElementById("panelView")) {
             mostrarFichaCliente(c);
         });
 
-        // Modal Eliminar
         window.abrirModalEliminar = (rut, id, tipo) => {
             rutAEliminar = rut; tipoEliminacion = tipo;
             document.getElementById("modalEliminar").classList.add("active");
