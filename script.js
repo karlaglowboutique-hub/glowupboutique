@@ -6,7 +6,7 @@ const auth = window.firebaseAuth;
 let clientes = {}; 
 
 // --- CONFIGURACIÓN DE SEGURIDAD ---
-// Reemplaza esto con el UID real del programador (Diego)
+// Reemplaza esto con tu UID real de programador (el tuyo, Diego)
 const UID_PROGRAMADOR = 'E19k5YcMkoRksWlOBj0c26PT7zQ2'; 
 
 function limpiarRut(rut) { return rut.replace(/\./g, '').trim(); }
@@ -27,7 +27,7 @@ async function cargarClientesNube(callback) {
 async function guardarClienteNube(rut, datos) { await setDoc(doc(db, "clientes", rut), datos); }
 async function eliminarClienteNube(rut) { await deleteDoc(doc(db, "clientes", rut)); }
 
-// Atajo Teclado para Programador
+// Atajo Teclado
 let keysPressed = "";
 document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
@@ -36,7 +36,7 @@ document.addEventListener("keydown", (e) => {
     if (keysPressed.includes("programador")) { keysPressed = ""; window.location.href = "programador.html"; }
 });
 
-// ================= LOGIN PRINCIPAL =================
+// ================= LOGIN =================
 if (document.getElementById("loginForm")) {
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -130,25 +130,26 @@ if (document.getElementById("panelView")) {
             document.getElementById("diagRut").value = rut;
             document.getElementById("dNombre").value = clientes[rut].nombre;
             document.getElementById("dTelefono").value = clientes[rut].telefono || "";
+            // Limpiamos los campos del formulario antes de abrir
+            document.getElementById("diagTipoPiel").value = "Normal";
+            document.getElementById("diagObservaciones").value = "";
             document.getElementById("vistaFichaCompleta").style.display = "block";
         };
 
         document.getElementById("btnCerrarFicha").onclick = () => document.getElementById("vistaFichaCompleta").style.display = "none";
 
-        // Guardar Diagnóstico (CORREGIDO PARA GUARDAR DATOS)
+        // Guardar Diagnóstico (AHORA LEE LOS CAMPOS NUEVOS)
         document.getElementById("formDiagnosticoAnesi").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = document.getElementById("diagRut").value;
             const c = clientes[rut];
             if(!c.atenciones) c.atenciones = [];
             
-            // Capturamos los datos del formulario de diagnóstico
-            // Nota: Si tienes más inputs en tu HTML (ej. observaciones), agrégalos aquí.
             const nuevoDiagnostico = { 
                 id: Date.now().toString(), 
                 fecha: new Date().toISOString().split('T')[0],
-                nombrePaciente: document.getElementById('dNombre').value,
-                telefonoPaciente: document.getElementById('dTelefono').value
+                tipoPiel: document.getElementById('diagTipoPiel').value,
+                observaciones: document.getElementById('diagObservaciones').value.trim()
             };
             
             c.atenciones.push(nuevoDiagnostico);
@@ -176,10 +177,9 @@ if (document.getElementById("panelView")) {
     }
 }
 
-// ================= PANEL PROGRAMADOR (CORREGIDO CON SEGURIDAD) =================
+// ================= PANEL PROGRAMADOR =================
 if (document.getElementById("loginProgBox")) {
     onAuthStateChanged(auth, (user) => {
-        // Verifica que esté logueado Y que sea el UID del programador
         if (user && user.uid === UID_PROGRAMADOR) {
             document.getElementById("loginProgBox").style.display = "none";
             document.getElementById("dashboardProg").style.display = "block";
@@ -196,7 +196,6 @@ if (document.getElementById("loginProgBox")) {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, document.getElementById("pEmail").value.trim(), document.getElementById("pPass").value);
-            // Validación extra: Si no es el UID correcto, lo saca
             if (userCredential.user.uid !== UID_PROGRAMADOR) {
                 document.getElementById("errorProg").textContent = "Acceso Denegado. No eres el programador autorizado.";
                 await signOut(auth);
