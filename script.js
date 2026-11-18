@@ -142,7 +142,7 @@ if (document.getElementById("panelView")) {
             });
         }
 
-        // MOSTRAR FICHA RESUMIDA (Corregido: Los botones ahora funcionan)
+        // MOSTRAR FICHA RESUMIDA (Usando querySelector para evitar errores de ID)
         function mostrarFichaCliente(cliente) {
             let html = `
             <div class="ficha">
@@ -160,21 +160,24 @@ if (document.getElementById("panelView")) {
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
-                    <button class="btn-primary" id="btnAbrirFicha" style="flex: 1;">➕ Ver Diagnóstico / Tratamiento</button>
-                    <button class="btn-primary" id="btnBorrarFicha" style="flex: 1; background: #e53935 !important; color: #fff !important; border: none !important;">🗑️ Borrar Cliente</button>
+                    <button class="btn-primary btn-abrir-ficha" style="flex: 1;">➕ Ver Diagnóstico / Tratamiento</button>
+                    <button class="btn-primary btn-borrar-ficha" style="flex: 1; background: #e53935 !important; color: #fff !important; border: none !important;">🗑️ Borrar Cliente</button>
                 </div>
             </div>`;
             contenedorFicha.innerHTML = html;
 
-            // AQUÍ ESTÁ LA CORRECCIÓN: Asignamos los eventos a los botones recién creados
-            document.getElementById("btnAbrirFicha").onclick = () => abrirFichaAnesi(cliente.rut);
-            document.getElementById("btnBorrarFicha").onclick = () => abrirModalEliminar(cliente.rut, null, 'cliente');
+            // Asignación de eventos directa a las clases
+            contenedorFicha.querySelector(".btn-abrir-ficha").onclick = () => abrirFichaAnesi(cliente.rut);
+            contenedorFicha.querySelector(".btn-borrar-ficha").onclick = () => abrirModalEliminar(cliente.rut, null, 'cliente');
         }
 
-        // ABRIR FICHA GRANDE (Usando la clase .active)
+        // ABRIR FICHA GRANDE (Quitando el required para que no bloquee)
         function abrirFichaAnesi(rut) {
             const c = clientes[rut];
             if (!c) return;
+
+            // Quitamos temporalmente el required para que no bloquee la apertura
+            document.getElementById("diagTipoPiel").removeAttribute("required");
 
             document.getElementById("diagRut").value = rut;
             document.getElementById("dNombre").value = c.nombre;
@@ -189,7 +192,7 @@ if (document.getElementById("panelView")) {
             document.getElementById("diagTipoPiel").value = c.piel || "Normal";
             document.getElementById("diagObservaciones").value = "";
             
-            // Abre la ventana agregando la clase active
+            // Mostramos la ventana
             document.getElementById("vistaFichaCompleta").classList.add("active");
         }
 
@@ -197,6 +200,7 @@ if (document.getElementById("panelView")) {
             document.getElementById("vistaFichaCompleta").classList.remove("active");
         };
 
+        // GUARDAR DIAGNÓSTICO (Reactivamos el required al guardar)
         document.getElementById("formDiagnosticoAnesi").addEventListener("submit", async (e) => {
             e.preventDefault();
             const rut = document.getElementById("diagRut").value;
@@ -217,6 +221,7 @@ if (document.getElementById("panelView")) {
             mostrarFichaCliente(c);
         });
 
+        // MODAL ELIMINAR
         function abrirModalEliminar(rut, id, tipo) {
             rutAEliminar = rut; tipoEliminacion = tipo;
             document.getElementById("modalEliminar").classList.add("active");
