@@ -3,85 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Clínico - Glow Up Boutique</title>
+    <title>Panel clínico - Glow Up Boutique</title>
+    <link rel="icon" href="imagenes/logo.png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="panel" id="panelView" style="display: block;">
+<body class="cargando">
+
+    <main class="panel" id="panelView">
         <div class="panel-header">
             <div class="brand-header">
-                <img src="imagenes/logo.png" alt="Logo" class="mini-logo-img">
-                <h2>GLOW UP BOUTIQUE</h2>
+                <img src="imagenes/logo.png" alt="" class="mini-logo-img" onerror="this.style.display='none'">
+                <h1>GLOW UP BOUTIQUE</h1>
             </div>
-            <button class="btn-logout" id="btnLogout">Cerrar Sesión</button>
+            <button type="button" class="btn-logout" id="btnLogout">Cerrar sesión</button>
         </div>
 
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="buscar">Buscar Cliente</button>
-            <button class="tab-btn" data-tab="nuevo">Ingresar Cliente Nuevo</button>
+        <div class="tabs" role="tablist">
+            <button type="button" class="tab-btn active" role="tab" id="btn-buscar" aria-selected="true" aria-controls="tab-buscar" data-tab="buscar">Buscar cliente</button>
+            <button type="button" class="tab-btn" role="tab" id="btn-nuevo" aria-selected="false" aria-controls="tab-nuevo" data-tab="nuevo">Ingresar cliente nuevo</button>
         </div>
 
         <!-- PESTAÑA: BUSCAR CLIENTE -->
-        <div class="tab-content active" id="tab-buscar">
-            <div class="form-group" style="max-width: 400px; margin: 0 auto 20px auto;">
-                <label for="buscarRut" style="text-align: center;">Ingrese RUT del cliente</label>
-                <input type="text" id="buscarRut" placeholder="Ej: 12.345.678-9" style="text-align: center;">
-            </div>
-            <button class="btn-primary" id="btnBuscar" style="max-width: 400px; margin: 0 auto 20px auto;">BUSCAR CLIENTE</button>
-            <div class="error-msg" id="errorBuscar"></div>
+        <section class="tab-content active" id="tab-buscar" role="tabpanel" aria-labelledby="btn-buscar">
+            <h2 class="sr-only">Buscar cliente</h2>
+            <form id="formBuscar" class="form-buscar" novalidate>
+                <div class="form-group">
+                    <label for="buscarRut" class="centrado">Ingrese el RUT del cliente</label>
+                    <input type="text" id="buscarRut" class="centrado" placeholder="Ej: 12.345.678-9" autocomplete="off">
+                </div>
+                <button type="submit" class="btn-primary" id="btnBuscar">BUSCAR CLIENTE</button>
+            </form>
+            <div class="error-msg" id="errorBuscar" role="alert" aria-live="polite"></div>
             <div id="contenedorFicha"></div>
-        </div>
+        </section>
 
         <!-- PESTAÑA: NUEVO CLIENTE (ASISTENTE POR PASOS) -->
-        <div class="tab-content" id="tab-nuevo">
-            <form id="formNuevo">
-                <!-- PASO 1: DATOS PERSONALES -->
-                <div id="paso1_datosPersonales">
-                    <h3>Paso 1: Datos Personales</h3>
-                    <div class="form-row">
-                        <div class="form-group"><label for="nNombre">Nombre Completo</label><input type="text" id="nNombre" placeholder="Ej: Ana Pérez" required></div>
-                        <div class="form-group"><label for="nRut">RUT</label><input type="text" id="nRut" placeholder="Ej: 11.222.333-4" required></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label for="nEdad">Edad</label><input type="number" id="nEdad" placeholder="Ej: 28" required></div>
-                        <div class="form-group"><label for="nTelefono">Teléfono</label><input type="text" id="nTelefono" placeholder="+569..." required></div>
-                    </div>
-                    <div class="form-group"><label for="nEmail">Email</label><input type="email" id="nEmail" placeholder="correo@ejemplo.com" required></div>
-                    
-                    <button type="button" class="btn-primary" id="btnSiguientePaso">SIGUIENTE: DATOS MÉDICOS ➔</button>
-                </div>
+        <section class="tab-content" id="tab-nuevo" role="tabpanel" aria-labelledby="btn-nuevo">
+            <form id="formNuevo" autocomplete="off" novalidate>
 
-                <!-- PASO 2: DATOS MÉDICOS -->
-                <div id="paso2_datosMedicos" style="display: none;">
-                    <h3>Paso 2: Antecedentes Médicos y Estéticos</h3>
-                    
-                    <div class="form-group">
-                        <label for="nAlergias">Alergias (Medicamentos, cosméticos, etc.)</label>
-                        <input type="text" id="nAlergias" placeholder="Si no tiene, escriba 'Ninguna'" required>
-                    </div>
-                    
+                <!-- PASO 1 -->
+                <div id="paso1_datosPersonales">
+                    <h2>Paso 1: datos personales</h2>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="nMorbidos">Enfermedades Previas / Actuales</label>
-                            <input type="text" id="nMorbidos" placeholder="Ej: Diabetes... Si no, 'Ninguna'">
+                            <label for="nNombre">Nombre completo</label>
+                            <input type="text" id="nNombre" placeholder="Ej: Ana Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nRut">RUT</label>
+                            <input type="text" id="nRut" placeholder="Ej: 11.222.333-4" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nEdad">Edad</label>
+                            <input type="number" id="nEdad" min="0" max="120" step="1" inputmode="numeric" placeholder="Ej: 28" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nTelefono">Teléfono</label>
+                            <input type="tel" id="nTelefono" placeholder="+56 9 1234 5678" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nEmail">Email</label>
+                        <input type="email" id="nEmail" placeholder="correo@ejemplo.com" required>
+                    </div>
+                    <button type="submit" class="btn-primary" id="btnSiguientePaso">SIGUIENTE: DATOS MÉDICOS ➔</button>
+                </div>
+
+                <!-- PASO 2 -->
+                <div id="paso2_datosMedicos" hidden>
+                    <h2>Paso 2: antecedentes médicos y estéticos</h2>
+
+                    <div class="form-group">
+                        <label for="nAlergias">Alergias (medicamentos, cosméticos, etc.)</label>
+                        <input type="text" id="nAlergias" placeholder="Si no tiene, escriba “Ninguna”" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nMorbidos">Enfermedades previas / actuales</label>
+                            <input type="text" id="nMorbidos" placeholder="Ej: diabetes. Si no, “Ninguna”" required>
                         </div>
                         <div class="form-group">
                             <label for="nMedicamentos">Medicamentos actuales</label>
-                            <input type="text" id="nMedicamentos" placeholder="Ej: Isotretinoína... Si no, 'Ninguno'">
+                            <input type="text" id="nMedicamentos" placeholder="Ej: isotretinoína. Si no, “Ninguno”" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="nEmbarazo">¿Embarazo o Lactancia?</label>
+                            <label for="nEmbarazo">¿Embarazo o lactancia?</label>
                             <select id="nEmbarazo" required>
+                                <option value="" disabled selected>Seleccione...</option>
                                 <option value="No">No</option>
                                 <option value="Sí">Sí</option>
                                 <option value="No aplica">No aplica</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="nPiel">Tipo de Piel</label>
+                            <label for="nPiel">Tipo de piel</label>
                             <select id="nPiel" required>
                                 <option value="" disabled selected>Seleccione...</option>
                                 <option value="Normal">Normal</option>
@@ -107,72 +128,81 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="nCirugias">Cirugías Estéticas Previas</label>
-                            <input type="text" id="nCirugias" placeholder="Si no, escriba 'Ninguna'">
+                            <label for="nCirugias">Cirugías estéticas previas</label>
+                            <input type="text" id="nCirugias" placeholder="Si no, escriba “Ninguna”" required>
                         </div>
                     </div>
 
-                    <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; margin-top: 15px; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
-                        <input type="checkbox" id="nConsentimiento" required style="width: auto; margin-top: 4px; accent-color: #d4af37;">
-                        <label for="nConsentimiento" style="font-size: 12px; color: #555; line-height: 1.4; text-transform: none; letter-spacing: 0;">
-                            Autorizo el tratamiento de mis datos sensibles...
-                        </label>
-                    </div>
+                    <label class="check-consentimiento">
+                        <input type="checkbox" id="nConsentimiento" required>
+                        <span>Declaro que el cliente leyó la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y autoriza expresamente el tratamiento de sus datos personales y de salud (alergias, enfermedades, medicamentos, embarazo o lactancia, cirugías y diagnósticos) para la evaluación cosmetológica, el historial de atenciones y el contacto para su seguimiento.</span>
+                    </label>
 
-                    <div style="display: flex; gap: 10px; margin-top: 20px;">
-                        <button type="button" class="btn-cancelar" id="btnVolverPaso1" style="flex: 1;">⬅ Volver</button>
-                        <button type="submit" class="btn-primary" style="flex: 2;">GUARDAR Y ABRIR FICHA</button>
+                    <div class="fila-botones">
+                        <button type="button" class="btn-cancelar" id="btnVolverPaso1">⬅ Volver</button>
+                        <button type="submit" class="btn-primary btn-grow" id="btnGuardarNuevo">GUARDAR Y ABRIR FICHA</button>
                     </div>
-                    <div class="success-msg" id="msgNuevo" style="margin-top: 15px;"></div>
                 </div>
+
+                <div class="success-msg" id="msgNuevo" role="status" aria-live="polite"></div>
             </form>
 
             <div class="listado">
-                <h3>Clientes Registrados</h3>
+                <h2>Clientes registrados</h2>
+                <div class="form-group">
+                    <label for="filtroLista" class="sr-only">Filtrar por nombre o RUT</label>
+                    <input type="search" id="filtroLista" placeholder="Filtrar por nombre o RUT" autocomplete="off">
+                </div>
                 <div id="listaClientes" class="lista-clientes"></div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- VISTA DE FICHA Y DIAGNÓSTICO -->
+        <p class="pie-legal"><a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a></p>
+    </main>
+
+    <!-- FICHA DE DIAGNÓSTICO (oculta hasta que se abre) -->
     <div class="vista-ficha" id="vistaFichaCompleta">
         <div class="ficha-papel">
             <div class="ficha-header-print">
                 <div class="ficha-logo">GLOW UP <span>BOUTIQUE</span></div>
-                <div class="ficha-titulo"><h2>DIAGNÓSTICO FACIAL</h2></div>
+                <div class="ficha-titulo">
+                    <h2>DIAGNÓSTICO FACIAL</h2>
+                    <p class="modo-ficha" id="modoFicha"></p>
+                </div>
                 <div class="ficha-logo">GLOW UP <span>BOUTIQUE</span></div>
             </div>
-            
-            <form id="formDiagnosticoAnesi">
+
+            <form id="formDiagnosticoAnesi" autocomplete="off">
                 <input type="hidden" id="diagRut">
-                
+                <input type="hidden" id="diagId">
+
                 <div class="seccion-ficha">
-                    <h4>1. DATOS DEL PACIENTE</h4>
+                    <h3>1. DATOS DEL CLIENTE</h3>
                     <div class="ficha-grid">
-                        <div class="ficha-item"><span>Nombre:</span><input type="text" id="dNombre" readonly class="input-print"></div>
-                        <div class="ficha-item"><span>Teléfono:</span><input type="text" id="dTelefono" readonly class="input-print"></div>
-                    </div>
-                    
-                    <h5 style="margin-top: 25px; margin-bottom: 15px; font-size: 13px; color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">Antecedentes Médicos</h5>
-                    <div class="ficha-grid">
-                        <div class="ficha-item" style="grid-column: 1 / -1;"><span>Alergias:</span><input type="text" id="dAlergias" readonly class="input-print"></div>
-                        <div class="ficha-item"><span>Enfermedades:</span><input type="text" id="dMorbidos" readonly class="input-print"></div>
-                        <div class="ficha-item"><span>Medicamentos:</span><input type="text" id="dMedicamentos" readonly class="input-print"></div>
+                        <div class="ficha-item"><label for="dNombre">Nombre:</label><input type="text" id="dNombre" readonly data-fijo="1" class="input-print"></div>
+                        <div class="ficha-item"><label for="dTelefono">Teléfono:</label><input type="text" id="dTelefono" readonly data-fijo="1" class="input-print"></div>
                     </div>
 
-                    <h5 style="margin-top: 25px; margin-bottom: 15px; font-size: 13px; color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">Perfil Estético</h5>
+                    <h4>Antecedentes médicos</h4>
                     <div class="ficha-grid">
-                        <div class="ficha-item"><span>Tipo de Piel:</span><input type="text" id="dPiel" readonly class="input-print"></div>
-                        <div class="ficha-item"><span>Fototipo:</span><input type="text" id="dFototipo" readonly class="input-print"></div>
-                        <div class="ficha-item" style="grid-column: 1 / -1;"><span>Cirugías / Tratamientos Previos:</span><input type="text" id="dCirugias" readonly class="input-print"></div>
+                        <div class="ficha-item ficha-full"><label for="dAlergias">Alergias:</label><input type="text" id="dAlergias" readonly data-fijo="1" class="input-print"></div>
+                        <div class="ficha-item"><label for="dMorbidos">Enfermedades:</label><input type="text" id="dMorbidos" readonly data-fijo="1" class="input-print"></div>
+                        <div class="ficha-item"><label for="dMedicamentos">Medicamentos:</label><input type="text" id="dMedicamentos" readonly data-fijo="1" class="input-print"></div>
+                    </div>
+
+                    <h4>Perfil estético</h4>
+                    <div class="ficha-grid">
+                        <div class="ficha-item"><label for="dPiel">Tipo de piel:</label><input type="text" id="dPiel" readonly data-fijo="1" class="input-print"></div>
+                        <div class="ficha-item"><label for="dFototipo">Fototipo:</label><input type="text" id="dFototipo" readonly data-fijo="1" class="input-print"></div>
+                        <div class="ficha-item ficha-full"><label for="dCirugias">Cirugías / tratamientos previos:</label><input type="text" id="dCirugias" readonly data-fijo="1" class="input-print"></div>
                     </div>
                 </div>
 
                 <div class="seccion-ficha">
-                    <h4>2. EVALUACIÓN DE LA SESIÓN</h4>
+                    <h3>2. EVALUACIÓN DE LA SESIÓN</h3>
                     <div class="form-group-inline">
-                        <label>Tipo de Piel Observada Hoy:</label>
-                        <select id="diagTipoPiel" class="input-print" required>
+                        <label for="diagTipoPiel">Tipo de piel observada hoy:</label>
+                        <select id="diagTipoPiel" class="input-print">
                             <option value="Normal">Normal</option>
                             <option value="Seca">Seca</option>
                             <option value="Grasa">Grasa</option>
@@ -180,48 +210,36 @@
                             <option value="Sensible">Sensible</option>
                         </select>
                     </div>
-                    <div class="form-group-inline" style="align-items: flex-start;">
-                        <label style="margin-top: 10px;">Observaciones / Tratamiento:</label>
+                    <div class="form-group-inline">
+                        <label for="diagObservaciones">Observaciones / tratamiento:</label>
                         <textarea id="diagObservaciones" class="input-print" rows="4" placeholder="Detalles del diagnóstico..."></textarea>
                     </div>
                 </div>
 
+                <div class="error-msg" id="errorDiag" role="alert" aria-live="polite"></div>
+
                 <div class="acciones-ficha">
                     <button type="button" class="btn-cancelar" id="btnCerrarFicha">Cerrar</button>
-                    <button type="submit" class="btn-primary">Guardar Diagnóstico</button>
+                    <button type="button" class="btn-cancelar" id="btnImprimir">Imprimir</button>
+                    <button type="submit" class="btn-primary btn-inline" id="btnGuardarDiag">Guardar diagnóstico</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- MODAL: ELIMINAR ATENCIÓN -->
     <div class="modal-overlay" id="modalEliminar">
-        <div class="modal-content" style="text-align: center; max-width: 400px;">
-            <h3 style="color: #e53935;" id="modalEliminarTitle">⚠️ Eliminar</h3>
-            <p id="modalEliminarText">¿Estás seguro?</p>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-cancelar" id="btnCancelarEliminar" style="flex: 1;">Cancelar</button>
-                <button class="btn-primary" id="btnConfirmarEliminar" style="flex: 1; background: #e53935; color:#fff; border:none;">Sí, eliminar</button>
+        <div class="modal-content modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modalEliminarTitle" aria-describedby="modalEliminarText">
+            <h2 class="modal-titulo" id="modalEliminarTitle">⚠️ Eliminar diagnóstico</h2>
+            <p class="modal-texto" id="modalEliminarText">¿Estás seguro?</p>
+            <div class="error-msg" id="modalEliminarError" role="alert"></div>
+            <div class="modal-botones">
+                <button type="button" class="btn-cancelar" id="btnCancelarEliminar">Cancelar</button>
+                <button type="button" class="btn-primary btn-peligro btn-inline btn-grow" id="btnConfirmarEliminar">Sí, eliminar</button>
             </div>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAynA1pU1npXEN_HvXNxTC4Xn7QB_SWyWg",
-            authDomain: "glow-up-boutique-bdc0c.firebaseapp.com",
-            projectId: "glow-up-boutique-bdc0c",
-            storageBucket: "glow-up-boutique-bdc0c.firebasestorage.app",
-            messagingSenderId: "372481623830",
-            appId: "1:372481623830:web:e93a695c930f6a934ef237"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        window.firebaseDB = getFirestore(app); window.firebaseAuth = getAuth(app);
-        const script = document.createElement('script'); script.src = "script.js"; script.type = "module"; document.body.appendChild(script);
-    </script>
+    <script type="module" src="js/panel.js"></script>
 </body>
 </html>
