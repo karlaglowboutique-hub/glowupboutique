@@ -4,47 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración - Glow Up Boutique</title>
+    <link rel="icon" href="imagenes/logo.png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="panel" style="display: block; max-width: 1000px;">
+<body class="cargando">
+
+    <main class="panel panel-prog">
         <div class="panel-header">
-            <h2 style="color: #111; font-family: 'Times New Roman', serif; letter-spacing: 2px;">⚙️ Panel de Programador</h2>
-            <button class="btn-logout" id="btnSalirProg">Cerrar Sesión</button>
+            <h1>⚙️ Panel del programador</h1>
+            <button type="button" class="btn-logout" id="btnSalirProg" hidden>Cerrar sesión</button>
         </div>
 
-        <div id="loginProgBox" style="max-width: 400px; margin: 50px auto;">
-            <form id="formLoginProg">
-                <div class="form-group"><label for="pEmail">Correo (Programador)</label><input type="email" id="pEmail" required></div>
-                <div class="form-group"><label for="pPass">Contraseña</label><input type="password" id="pPass" required></div>
-                <button type="submit" class="btn-primary">Desbloquear Acceso</button>
-                <div class="error-msg" id="errorProg" style="margin-top: 15px;"></div>
+        <!-- Inicio de sesión del programador -->
+        <div id="loginProgBox" class="login-prog">
+            <form id="formLoginProg" novalidate>
+                <div class="form-group">
+                    <label for="pEmail">Correo (programador)</label>
+                    <input type="email" id="pEmail" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="pPass">Contraseña</label>
+                    <input type="password" id="pPass" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn-primary" id="btnLoginProg">Desbloquear acceso</button>
+                <div class="error-msg" id="errorProg" role="alert" aria-live="polite"></div>
             </form>
+            <p class="pie-legal"><a href="panel.html">Volver al panel clínico</a></p>
         </div>
 
-        <div id="dashboardProg" style="display: none;">
-            <h3>Base de Datos en la Nube</h3>
-            <div id="listaClientesProg" style="margin-top: 20px;"></div>
+        <!-- Lista de clientes (solo tras iniciar sesión como programador) -->
+        <div id="dashboardProg" hidden>
+            <h2>Base de datos en la nube</h2>
+            <div id="listaClientesProg" class="lista-prog"></div>
+        </div>
+    </main>
+
+    <!-- Modal editar cliente -->
+    <div class="modal-overlay" id="modalEditarProg">
+        <div class="modal-content modal-editar" role="dialog" aria-modal="true" aria-labelledby="tituloEditarProg">
+            <h2 class="modal-titulo" id="tituloEditarProg">✏️ Editar cliente (base de datos)</h2>
+            <form id="formEditarProg" autocomplete="off" novalidate>
+                <input type="hidden" id="epRutOriginal">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="epNombre">Nombre</label>
+                        <input type="text" id="epNombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="epRut">RUT</label>
+                        <input type="text" id="epRut" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="epEdad">Edad</label>
+                        <input type="number" id="epEdad" min="0" max="120" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="epTelefono">Teléfono</label>
+                        <input type="tel" id="epTelefono" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="epEmail">Email</label>
+                    <input type="email" id="epEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="epAlergias">Alergias</label>
+                    <input type="text" id="epAlergias" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="epMorbidos">Enfermedades</label>
+                        <input type="text" id="epMorbidos">
+                    </div>
+                    <div class="form-group">
+                        <label for="epMedicamentos">Medicamentos</label>
+                        <input type="text" id="epMedicamentos">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="epEmbarazo">Embarazo / lactancia</label>
+                        <select id="epEmbarazo">
+                            <option value="No">No</option>
+                            <option value="Sí">Sí</option>
+                            <option value="No aplica">No aplica</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="epPiel">Tipo de piel</label>
+                        <select id="epPiel">
+                            <option value="Normal">Normal</option>
+                            <option value="Seca">Seca</option>
+                            <option value="Grasa">Grasa</option>
+                            <option value="Mixta">Mixta</option>
+                            <option value="Sensible">Sensible</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="epFototipo">Fototipo</label>
+                        <select id="epFototipo">
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                            <option value="V">V</option>
+                            <option value="VI">VI</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="epCirugias">Cirugías previas</label>
+                        <input type="text" id="epCirugias">
+                    </div>
+                </div>
+                <div class="error-msg" id="errorEditarProg" role="alert" aria-live="polite"></div>
+                <div class="modal-botones">
+                    <button type="button" class="btn-cancelar" id="btnCerrarEditarProg">Cancelar</button>
+                    <button type="submit" class="btn-primary btn-inline btn-grow" id="btnGuardarEditarProg">Guardar cambios</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    <!-- Modal eliminar -->
+    <div class="modal-overlay" id="modalEliminar">
+        <div class="modal-content modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modalEliminarTitle" aria-describedby="modalEliminarText">
+            <h2 class="modal-titulo" id="modalEliminarTitle">⚠️ Borrar de la base de datos</h2>
+            <p class="modal-texto" id="modalEliminarText">¿Estás seguro?</p>
+            <div class="error-msg" id="modalEliminarError" role="alert"></div>
+            <div class="modal-botones">
+                <button type="button" class="btn-cancelar" id="btnCancelarEliminar">Cancelar</button>
+                <button type="button" class="btn-primary btn-peligro btn-inline btn-grow" id="btnConfirmarEliminar">Sí, borrar</button>
+            </div>
+        </div>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAynA1pU1npXEN_HvXNxTC4Xn7QB_SWyWg",
-            authDomain: "glow-up-boutique-bdc0c.firebaseapp.com",
-            projectId: "glow-up-boutique-bdc0c",
-            storageBucket: "glow-up-boutique-bdc0c.firebasestorage.app",
-            messagingSenderId: "372481623830",
-            appId: "1:372481623830:web:e93a695c930f6a934ef237"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        window.firebaseDB = getFirestore(app); window.firebaseAuth = getAuth(app);
-        const script = document.createElement('script'); script.src = "script.js"; script.type = "module"; document.body.appendChild(script);
-    </script>
+    <script type="module" src="js/programador.js"></script>
 </body>
 </html>
