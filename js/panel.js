@@ -8,6 +8,7 @@ import {
     esc, validarRut, rutClave, formatearRut, fechaHoyLocal, fechaBonita,
     nuevoId, mensajeErrorFirestore
 } from "./utils.js";
+import { abrirFichaEstetica } from "./ficha-estetica.js";
 
 const usuario = await requerirSesion();
 
@@ -24,7 +25,7 @@ const modal = $("modalEliminar");
 
 let clientes = {};            // copia en vivo de Firestore
 let rutFichaActual = null;    // cliente que se ve en la pestaña "Buscar"
-let pendienteAbrir = null;    // RUT recién creado: al llegar a la caché se abre su ficha
+let pendienteAbrir = null;    // RUT recién creado: al llegar a la caché se ofrece la ficha estética
 let soloLectura = false;
 let formModificado = false;
 let eliminacion = null;       // { rut, id }
@@ -45,7 +46,7 @@ onSnapshot(
             pendienteAbrir = null;
             rutFichaActual = rut;
             mostrarFichaCliente(clientes[rut]);
-            abrirFichaAnesi(rut, null, false);
+            ofrecerFichaEstetica(rut);
         } else if (rutFichaActual) {
             if (clientes[rutFichaActual]) mostrarFichaCliente(clientes[rutFichaActual]);
             else { rutFichaActual = null; contenedorFicha.innerHTML = ""; }
@@ -194,12 +195,12 @@ formNuevo.addEventListener("submit", async (e) => {
         activarTab("buscar");
         $("buscarRut").value = formatearRut(clave);
         $("errorBuscar").textContent = "";
-        pendienteAbrir = clave;                // se abrirá la ficha apenas llegue a la caché
+        pendienteAbrir = clave;                // se ofrecerá la ficha estética apenas llegue a la caché
         if (clientes[clave]) {                 // por si ya llegó
             const rut = pendienteAbrir; pendienteAbrir = null;
             rutFichaActual = rut;
             mostrarFichaCliente(clientes[rut]);
-            abrirFichaAnesi(rut, null, false);
+            ofrecerFichaEstetica(rut);
         }
     } catch (err) {
         console.error(err);
@@ -286,6 +287,30 @@ function mostrarFichaCliente(c) {
                 </div>
             </div>`).join("");
 
+    const fe = c.fichaEstetica;
+    const seccionFE = fe ? `
+            <h4>Ficha estética</h4>
+            <div class="fe-resumen">
+                <div class="fe-resumen-datos">
+                    <strong>Ficha estética creada</strong>
+                    <span>Creada el ${esc(fechaBonita(fe.creadaEn))} · 1º estudio: ${esc(fechaBonita(fe.estudio1 && fe.estudio1.fecha))} · Estudios de seguimiento: ${Array.isArray(fe.estudios) ? fe.estudios.length : 0} de 8</span>
+                </div>
+                <div class="fe-resumen-acciones">
+                    <button type="button" class="btn-ver" data-accion="fe-ver">Ver</button>
+                    <button type="button" class="btn-edit" data-accion="fe-editar">Editar / agregar estudio</button>
+                </div>
+            </div>` : `
+            <h4>Ficha estética</h4>
+            <div class="fe-resumen fe-vacia">
+                <div class="fe-resumen-datos">
+                    <strong>Aún no tiene ficha estética</strong>
+                    <span>Se completa sola con los datos que ya están registrados.</span>
+                </div>
+                <div class="fe-resumen-acciones">
+                    <button type="button" class="btn-primary btn-inline" data-accion="fe-crear">Crear ficha estética</button>
+                </div>
+            </div>`;
+
     contenedorFicha.innerHTML = `
         <div class="ficha">
             <div class="ficha-header">
@@ -315,6 +340,7 @@ function mostrarFichaCliente(c) {
                 ${item("Fototipo", c.fototipo)}
                 ${item("Cirugías previas", c.cirugias)}
             </div>
+            ${seccionFE}
         </div>
 
         <div class="historial-container">
@@ -331,6 +357,8 @@ contenedorFicha.addEventListener("click", (e) => {
     else if (accion === "ver") abrirFichaAnesi(rutFichaActual, id, true);
     else if (accion === "editar") abrirFichaAnesi(rutFichaActual, id, false);
     else if (accion === "eliminar") abrirModalEliminar(rutFichaActual, id);
+    else if (accion === "fe-crear" || accion === "fe-editar") abrirFichaEstetica(clientes[rutFichaActual], "editar");
+    else if (accion === "fe-ver") abrirFichaEstetica(clientes[rutFichaActual], "ver");
 });
 
 // ---------------------------------------------------------------
@@ -485,15 +513,45 @@ $("btnConfirmarEliminar").addEventListener("click", async () => {
 });
 
 // ---------------------------------------------------------------
+// Después de guardar un cliente: ofrecer crear su ficha estética
+// ---------------------------------------------------------------
+const modalOfrecer = $("modalOfrecerFE");
+let rutOfrecido = null;
+
+function ofrecerFichaEstetica(rut) {
+    const c = clientes[rut];
+    if (!c) return;
+    rutOfrecido = rut;
+    $("ofrecerFETexto").textContent =
+        `${c.nombre} quedó registrado(a). ¿Quieres crear ahora su ficha estética? Se completa sola con los datos que ya ingresaste (nombre, RUT, teléfono, correo, tipo de piel y alergias).`;
+    modalOfrecer.classList.add("active");
+    $("btnOfrecerFECrear").focus();
+}
+
+function cerrarOfrecer() {
+    modalOfrecer.classList.remove("active");
+    rutOfrecido = null;
+}
+
+$("btnOfrecerFEDespues").addEventListener("click", cerrarOfrecer);
+modalOfrecer.addEventListener("click", (e) => { if (e.target === modalOfrecer) cerrarOfrecer(); });
+$("btnOfrecerFECrear").addEventListener("click", () => {
+    const c = clientes[rutOfrecido];
+    cerrarOfrecer();
+    if (c) abrirFichaEstetica(c, "editar");
+});
+
+// ---------------------------------------------------------------
 // Teclado: Escape cierra el modal; "programador" abre el panel del programador
 // ---------------------------------------------------------------
 let teclas = "";
 document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modalOfrecer.classList.contains("active")) { cerrarOfrecer(); return; }
     if (e.key === "Escape" && modal.classList.contains("active")) { cerrarModal(); return; }
 
     const t = e.target.tagName;
     if (t === "INPUT" || t === "TEXTAREA" || t === "SELECT") return;
-    if (modal.classList.contains("active") || vistaFicha.classList.contains("active")) return;
+    if (document.querySelector(".modal-overlay.active, .vista-ficha.active")) return;
     if (e.ctrlKey || e.metaKey || e.altKey || e.key.length !== 1) return;
 
     teclas = (teclas + e.key.toLowerCase()).slice(-11);
