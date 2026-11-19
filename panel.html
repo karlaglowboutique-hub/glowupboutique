@@ -227,7 +227,203 @@
         </div>
     </div>
 
-    <!-- MODAL: ELIMINAR ATENCIÓN -->
+    <!-- MODAL: ELIMINAR ATENCIÓN -->    <!-- FICHA ESTÉTICA (diagnóstico facial ANESI) -->
+    <div class="vista-ficha" id="vistaFichaEstetica">
+        <div class="ficha-papel">
+            <div class="ficha-header-print">
+                <div class="ficha-logo">GLOW UP <span>BOUTIQUE</span></div>
+                <div class="ficha-titulo">
+                    <h2>DIAGNÓSTICO FACIAL</h2>
+                    <p class="subtitulo-ficha">Descubre la realidad de tu piel</p>
+                    <p class="modo-ficha" id="modoFE"></p>
+                </div>
+                <div class="ficha-logo">GLOW UP <span>BOUTIQUE</span></div>
+            </div>
+
+            <form id="formFichaEstetica" autocomplete="off" novalidate>
+
+                <!-- DATOS DEL CLIENTE -->
+                <div class="seccion-ficha">
+                    <h3>DATOS DEL CLIENTE</h3>
+                    <p class="nota-auto no-print">Nombre, RUT, teléfono y correo ya están registrados en la ficha del cliente: se muestran automáticamente y no se vuelven a guardar aquí.</p>
+                    <div class="form-group-inline">
+                        <label for="feNombre">Nombre:</label>
+                        <input type="text" id="feNombre" readonly data-fijo="1" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feRut">RUT:</label>
+                        <input type="text" id="feRut" readonly data-fijo="1" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feNacimiento">Fecha de nacimiento:</label>
+                        <input type="date" id="feNacimiento" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feDireccion">Dirección:</label>
+                        <input type="text" id="feDireccion" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feTelefono">Tel:</label>
+                        <input type="text" id="feTelefono" readonly data-fijo="1" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feEmail">E-mail:</label>
+                        <input type="text" id="feEmail" readonly data-fijo="1" class="input-print">
+                    </div>
+                </div>
+
+                <!-- HÁBITOS DE BELLEZA -->
+                <div class="seccion-ficha">
+                    <h3>HÁBITOS DE BELLEZA <small>(¿Qué cosméticos emplea?)</small></h3>
+                    <div class="form-group-inline">
+                        <label for="feLimpieza">Limpieza:</label>
+                        <input type="text" id="feLimpieza" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feManana">Mañana:</label>
+                        <input type="text" id="feManana" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feNoche">Noche:</label>
+                        <input type="text" id="feNoche" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="fePuntuales">Puntuales:</label>
+                        <input type="text" id="fePuntuales" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feTratamientosPrevios">¿Qué tratamientos de instituto ha realizado?:</label>
+                        <textarea id="feTratamientosPrevios" class="input-print" rows="2"></textarea>
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feFrecuencia">Frecuencia:</label>
+                        <input type="text" id="feFrecuencia" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feSientePiel">¿Cómo siente su piel?:</label>
+                        <input type="text" id="feSientePiel" class="input-print">
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="fePreocupacion">¿Qué le preocupa de su piel?:</label>
+                        <input type="text" id="fePreocupacion" class="input-print">
+                    </div>
+                </div>
+
+                <!-- 1º ESTUDIO -->
+                <div class="seccion-ficha">
+                    <h3>1º ESTUDIO</h3>
+                    <div class="form-group-inline">
+                        <label for="feEstudio1Fecha">Fecha:</label>
+                        <input type="date" id="feEstudio1Fecha" class="input-print">
+                    </div>
+
+                    <h4 id="tituloFeDiag">DIAGNÓSTICO DE LA PIEL ANTES DEL TRATAMIENTO</h4>
+                    <p class="nota-auto no-print" id="feNotaAuto" hidden></p>
+                    <div class="grid-checkboxes" role="group" aria-labelledby="tituloFeDiag">
+                        <div>
+                            <label><input type="checkbox" class="fe-diag" value="Normal"> Normal</label>
+                            <label><input type="checkbox" class="fe-diag" value="Grasa"> Grasa</label>
+                            <label><input type="checkbox" class="fe-diag" value="Seca"> Seca</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox" class="fe-diag" value="Deshidratada"> Deshidratada</label>
+                            <label><input type="checkbox" class="fe-diag" value="Mixta"> Mixta</label>
+                            <label><input type="checkbox" class="fe-diag" value="Acneica"> Acneica</label>
+                        </div>
+                        <div>
+                            <label><input type="checkbox" class="fe-diag" value="Sensible"> Sensible</label>
+                            <label><input type="checkbox" class="fe-diag" value="Couperosis"> Couperosis</label>
+                            <label><input type="checkbox" class="fe-diag" value="Dermatitis"> Dermatitis</label>
+                        </div>
+                    </div>
+
+                    <h4>COMEDONES</h4>
+                    <div class="form-group-inline">
+                        <span class="etiqueta" id="lblFeTacto">Tacto y grosor:</span>
+                        <div class="checkbox-group" role="group" aria-labelledby="lblFeTacto">
+                            <label><input type="checkbox" class="fe-tacto" value="Fino"> Fino</label>
+                            <label><input type="checkbox" class="fe-tacto" value="Grueso"> Grueso</label>
+                            <label><input type="checkbox" class="fe-tacto" value="Descamación"> Descamación</label>
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <span class="etiqueta" id="lblFeLineas">Líneas de expresión:</span>
+                        <div class="checkbox-group" role="group" aria-labelledby="lblFeLineas">
+                            <label><input type="checkbox" class="fe-lineas" value="Ojos"> Ojos</label>
+                            <label><input type="checkbox" class="fe-lineas" value="Rostro"> Rostro</label>
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <span class="etiqueta" id="lblFeManchas">Manchas:</span>
+                        <div class="checkbox-group" role="group" aria-labelledby="lblFeManchas">
+                            <label><input type="checkbox" class="fe-manchas" value="Oscuras"> Oscuras</label>
+                            <label><input type="checkbox" class="fe-manchas" value="Claras"> Claras</label>
+                        </div>
+                    </div>
+
+                    <h4 id="tituloFeCodigos">CÓDIGOS DEL ROSTRO</h4>
+                    <div class="codigos-grid" id="feCodigos" role="group" aria-labelledby="tituloFeCodigos"></div>
+                    <div class="form-group-inline">
+                        <label for="feZonas">Zonas del rostro afectadas:</label>
+                        <textarea id="feZonas" class="input-print" rows="2" placeholder="Ej: mejillas (H), frente (HS)..."></textarea>
+                    </div>
+                </div>
+
+                <!-- CONSEJO PERSONALIZADO -->
+                <div class="seccion-ficha">
+                    <h3>CONSEJO PERSONALIZADO</h3>
+                    <div class="form-group-inline">
+                        <label for="feCabina">Tratamiento en cabina:</label>
+                        <textarea id="feCabina" class="input-print" rows="4"></textarea>
+                    </div>
+                    <h4>TRATAMIENTO EN CASA</h4>
+                    <div class="form-group-inline">
+                        <label for="feHigiene">Higiene:</label>
+                        <textarea id="feHigiene" class="input-print" rows="2"></textarea>
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feCuidadoDiario">Cuidado diario:</label>
+                        <textarea id="feCuidadoDiario" class="input-print" rows="2"></textarea>
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="feEspecificos">Específicos:</label>
+                        <textarea id="feEspecificos" class="input-print" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <!-- ESTUDIOS DE SEGUIMIENTO (2º al 9º) -->
+                <div class="seccion-ficha">
+                    <h3>ESTUDIOS DE SEGUIMIENTO</h3>
+                    <p class="nota-auto" id="feContadorEstudios"></p>
+                    <div id="feEstudios"></div>
+                    <div class="fila-botones no-print">
+                        <button type="button" class="btn-cancelar" id="btnQuitarEstudio">− Quitar último estudio</button>
+                        <button type="button" class="btn-primary btn-inline btn-grow" id="btnAgregarEstudio">➕ Agregar estudio</button>
+                    </div>
+                </div>
+
+                <div class="error-msg" id="errorFE" role="alert" aria-live="polite"></div>
+
+                <div class="acciones-ficha">
+                    <button type="button" class="btn-cancelar" id="btnCerrarFE">Cerrar</button>
+                    <button type="button" class="btn-cancelar" id="btnImprimirFE">Imprimir</button>
+                    <button type="submit" class="btn-primary btn-inline" id="btnGuardarFE">Guardar ficha estética</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: después de guardar un cliente, ofrecer crear la ficha estética -->
+    <div class="modal-overlay" id="modalOfrecerFE">
+        <div class="modal-content modal-confirm" role="dialog" aria-modal="true" aria-labelledby="ofrecerFETitulo" aria-describedby="ofrecerFETexto">
+            <h2 class="modal-titulo modal-ok" id="ofrecerFETitulo">✅ Cliente guardado</h2>
+            <p class="modal-texto" id="ofrecerFETexto"></p>
+            <div class="modal-botones">
+                <button type="button" class="btn-cancelar" id="btnOfrecerFEDespues">Ahora no</button>
+                <button type="button" class="btn-primary btn-inline btn-grow" id="btnOfrecerFECrear">Crear ficha estética</button>
+            </div>
+        </div>
+    </div>
     <div class="modal-overlay" id="modalEliminar">
         <div class="modal-content modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modalEliminarTitle" aria-describedby="modalEliminarText">
             <h2 class="modal-titulo" id="modalEliminarTitle">⚠️ Eliminar diagnóstico</h2>
