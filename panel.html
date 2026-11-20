@@ -6,6 +6,29 @@
     <title>Panel clínico - Glow Up Boutique</title>
     <link rel="icon" href="imagenes/logo.png">
     <link rel="stylesheet" href="styles.css">
+    <script>
+  // Muestra en pantalla cualquier error de carga, en vez de dejar la pantalla negra
+  (function () {
+    function mostrar(msg) {
+      if (document.getElementById("errorCarga")) return;
+      var d = document.createElement("div");
+      d.id = "errorCarga";
+      d.style.cssText = "position:fixed;inset:0;z-index:99999;background:#111;color:#fff;padding:30px;font:15px/1.5 Segoe UI,sans-serif;overflow:auto";
+      d.innerHTML = "<h2 style='color:#d4af37'>No se pudo cargar el panel</h2><p>Copia este mensaje y envíalo:</p><pre style='white-space:pre-wrap;background:#222;padding:15px;border-radius:8px'></pre>";
+      d.querySelector("pre").textContent = msg;
+      document.body.appendChild(d);
+    }
+    window.addEventListener("error", function (e) {
+      if (e.target && e.target !== window && e.target.tagName !== "SCRIPT") return;
+      mostrar((e.message || "Error de carga") +
+        (e.filename ? "\nArchivo: " + e.filename : "") +
+        (e.target && e.target.src ? "\nNo se pudo cargar: " + e.target.src : ""));
+    }, true);
+    window.addEventListener("unhandledrejection", function (e) {
+      mostrar("Error: " + (e.reason && e.reason.message ? e.reason.message : e.reason));
+    });
+  })();
+</script>
 </head>
 <body class="cargando">
 
