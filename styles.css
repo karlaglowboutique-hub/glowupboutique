@@ -274,6 +274,7 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
     .acciones-ficha, .error-msg, .modal-overlay { display: none !important; }
     .seccion-ficha { break-inside: avoid; }
 }
+
 /* =========================================
    FICHA ESTÉTICA (diagnóstico facial ANESI)
    ========================================= */
@@ -319,4 +320,89 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 @media print {
     .no-print, .nota-auto, #feContadorEstudios { display: none !important; }
     .chip-codigo { border: none; background: transparent; padding: 2px 0; }
+}
+
+/* =========================================
+   AGENDA (calendario de citas)
+   ========================================= */
+.ficha-acciones-header { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.agenda-barra { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.agenda-nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.agenda-nav h2 { min-width: 170px; text-align: center; text-transform: capitalize; margin: 0; font-size: 20px; }
+.btn-nav { width: 40px; height: 40px; padding: 0; background: #fff; color: var(--negro); border: 1px solid var(--negro); font-size: 20px; line-height: 1; }
+.btn-nav:hover { background: var(--negro); color: var(--oro); }
+.agenda-barra .btn-primary { margin-bottom: 0; }
+
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.cal-cab { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gris); padding: 6px 0; }
+.cal-dia { min-height: 96px; text-align: left; background: #fff; color: #333; border: 1px solid #eee; border-radius: 8px; padding: 6px; display: flex; flex-direction: column; align-items: stretch; gap: 3px; cursor: pointer; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 12px; overflow: hidden; }
+.cal-dia:hover { border-color: var(--oro); background: #fffdf5; }
+.cal-dia.otro-mes { background: #fafafa; color: #777; }
+.cal-dia.sel { border-color: var(--oro); box-shadow: 0 0 0 2px var(--oro); }
+.cal-num { font-size: 13px; font-weight: 700; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; }
+.cal-dia.hoy .cal-num { background: var(--negro); color: var(--oro); }
+
+.cal-chip { display: block; font-size: 11px; padding: 2px 5px; border-radius: 4px; background: #f6f1dc; border-left: 3px solid var(--oro); color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cal-chip.est-confirmada { background: #e8f5e9; border-left-color: var(--verde); color: #1b5e20; }
+.cal-chip.est-realizada { background: #eee; border-left-color: #888; color: #444; }
+.cal-mas { font-size: 11px; color: var(--gris); }
+.cal-count { display: none; align-self: flex-start; background: var(--oro); color: var(--negro); border-radius: 10px; font-size: 11px; font-weight: 700; padding: 1px 7px; }
+
+.cal-leyenda { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin: 12px 0 25px; font-size: 12px; color: var(--gris); }
+.cal-leyenda .punto { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; }
+.cal-leyenda .punto.est-pendiente { background: var(--oro); }
+.cal-leyenda .punto.est-confirmada { background: var(--verde); }
+.cal-leyenda .punto.est-realizada { background: #888; }
+.cal-leyenda-ayuda { margin-left: auto; font-style: italic; }
+
+/* Estados */
+.est { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-style: normal; white-space: nowrap; }
+.est-pendiente.est { background: #fff3cd; color: #664d03; }
+.est-confirmada.est { background: #e8f5e9; color: #1b5e20; }
+.est-realizada.est { background: #eee; color: #444; }
+.est-cancelada.est { background: #ffebee; color: var(--rojo-osc); }
+
+/* Citas del día */
+.agenda-dia, .agenda-proximas { margin-top: 10px; }
+.agenda-dia h3, .agenda-proximas h3 { color: var(--negro); font-size: 17px; }
+.agenda-dia-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--oro); padding-bottom: 10px; margin-bottom: 15px; }
+.agenda-proximas { margin-top: 35px; }
+.agenda-proximas h3 { border-bottom: 1px solid var(--oro); padding-bottom: 10px; margin-bottom: 15px; }
+
+.cita-card { background: #fff; border: 1px solid #eee; border-left: 4px solid var(--oro); border-radius: 8px; padding: 16px 18px; margin-bottom: 12px; }
+.cita-card.est-borde-confirmada { border-left-color: var(--verde); }
+.cita-card.est-borde-realizada { border-left-color: #888; }
+.cita-card.est-borde-cancelada { border-left-color: var(--rojo); opacity: 0.8; }
+.cita-card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+.cita-hora { font-size: 16px; color: var(--negro); }
+.cita-nombre { font-size: 15px; font-weight: 700; color: #222; overflow-wrap: anywhere; }
+.cita-tipo { font-size: 13px; color: var(--gris); margin-top: 2px; }
+.cita-notas { font-size: 13px; color: #444; margin-top: 8px; }
+.btn-wsp { display: inline-flex; align-items: center; padding: 10px 18px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; background: #e8f5e9; color: #1b5e20; border: 1px solid #1b5e20; border-radius: 8px; white-space: nowrap; }
+.btn-wsp:hover { background: #1b5e20; color: #fff; }
+
+.proxima { width: 100%; display: flex; align-items: center; gap: 14px; text-align: left; background: #fff; color: #333; border: 1px solid #eee; border-left: 4px solid var(--oro); border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; cursor: pointer; text-transform: none; letter-spacing: 0; font-weight: 400; }
+.proxima:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+.proxima-fecha { min-width: 78px; font-size: 12px; color: var(--gris); line-height: 1.4; }
+.proxima-fecha strong { font-size: 15px; color: var(--negro); }
+.proxima-datos { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.proxima-datos strong { color: #222; font-size: 14px; overflow-wrap: anywhere; }
+.proxima-datos span { color: var(--gris); font-size: 12px; }
+
+/* Resumen de citas dentro de la ficha del cliente */
+.citas-mini { display: flex; flex-direction: column; gap: 8px; }
+.cita-mini { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #fff; border: 1px solid #eee; border-left: 3px solid var(--oro); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
+.cita-mini span { color: var(--gris); flex: 1; }
+
+.modal-botones-cita { flex-wrap: wrap; }
+.modal-botones-cita .btn-delete { flex: 1 1 100%; padding: 10px; }
+
+@media (max-width: 600px) {
+    .cal-dia { min-height: 56px; align-items: center; }
+    .cal-chip, .cal-mas { display: none; }
+    .cal-count { display: inline-block; align-self: center; }
+    .cal-leyenda-ayuda { margin-left: 0; }
+    .agenda-nav h2 { min-width: 0; flex: 1; }
+    .proxima { flex-wrap: wrap; }
 }
