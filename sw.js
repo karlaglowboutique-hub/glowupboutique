@@ -1,7 +1,7 @@
 // ===== SERVICE WORKER: Glow Up Boutique =====
 // Guarda en el dispositivo SOLO los archivos de la aplicación (pantallas, estilos y código).
 // NUNCA guarda datos de clientes: esos viajan directo a Firebase y no pasan por esta caché.
-const VERSION = "glowup-v2";
+const VERSION = "glowup-v1";
 const ARCHIVOS = [
     "./", "index.html", "panel.html", "programador.html", "privacidad.html",
     "styles.css", "manifest.json",
