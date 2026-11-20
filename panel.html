@@ -7,28 +7,28 @@
     <link rel="icon" href="imagenes/logo.png">
     <link rel="stylesheet" href="styles.css">
     <script>
-  // Muestra en pantalla cualquier error de carga, en vez de dejar la pantalla negra
-  (function () {
-    function mostrar(msg) {
-      if (document.getElementById("errorCarga")) return;
-      var d = document.createElement("div");
-      d.id = "errorCarga";
-      d.style.cssText = "position:fixed;inset:0;z-index:99999;background:#111;color:#fff;padding:30px;font:15px/1.5 Segoe UI,sans-serif;overflow:auto";
-      d.innerHTML = "<h2 style='color:#d4af37'>No se pudo cargar el panel</h2><p>Copia este mensaje y envíalo:</p><pre style='white-space:pre-wrap;background:#222;padding:15px;border-radius:8px'></pre>";
-      d.querySelector("pre").textContent = msg;
-      document.body.appendChild(d);
-    }
-    window.addEventListener("error", function (e) {
-      if (e.target && e.target !== window && e.target.tagName !== "SCRIPT") return;
-      mostrar((e.message || "Error de carga") +
-        (e.filename ? "\nArchivo: " + e.filename : "") +
-        (e.target && e.target.src ? "\nNo se pudo cargar: " + e.target.src : ""));
-    }, true);
-    window.addEventListener("unhandledrejection", function (e) {
-      mostrar("Error: " + (e.reason && e.reason.message ? e.reason.message : e.reason));
-    });
-  })();
-</script>
+        // Si algo falla al cargar, muestra el error en pantalla en vez de dejarla negra
+        (function () {
+            function mostrar(msg) {
+                if (document.getElementById("errorCarga")) return;
+                var d = document.createElement("div");
+                d.id = "errorCarga";
+                d.style.cssText = "position:fixed;inset:0;z-index:99999;background:#111;color:#fff;padding:30px;font:15px/1.5 Segoe UI,sans-serif;overflow:auto";
+                d.innerHTML = "<h2 style='color:#d4af37'>No se pudo cargar el panel</h2><p>Copia este mensaje y envíalo:</p><pre style='white-space:pre-wrap;background:#222;padding:15px;border-radius:8px'></pre>";
+                d.querySelector("pre").textContent = msg;
+                document.body.appendChild(d);
+            }
+            window.addEventListener("error", function (e) {
+                if (e.target && e.target !== window && e.target.tagName !== "SCRIPT") return;
+                mostrar((e.message || "Error de carga") +
+                    (e.filename ? "\nArchivo: " + e.filename : "") +
+                    (e.target && e.target.src ? "\nNo se pudo cargar: " + e.target.src : ""));
+            }, true);
+            window.addEventListener("unhandledrejection", function (e) {
+                mostrar("Error: " + (e.reason && e.reason.message ? e.reason.message : e.reason));
+            });
+        })();
+    </script>
 </head>
 <body class="cargando">
 
@@ -44,6 +44,7 @@
         <div class="tabs" role="tablist">
             <button type="button" class="tab-btn active" role="tab" id="btn-buscar" aria-selected="true" aria-controls="tab-buscar" data-tab="buscar">Buscar cliente</button>
             <button type="button" class="tab-btn" role="tab" id="btn-nuevo" aria-selected="false" aria-controls="tab-nuevo" data-tab="nuevo">Ingresar cliente nuevo</button>
+            <button type="button" class="tab-btn" role="tab" id="btn-agenda" aria-selected="false" aria-controls="tab-agenda" data-tab="agenda">Agenda</button>
         </div>
 
         <!-- PESTAÑA: BUSCAR CLIENTE -->
@@ -66,7 +67,7 @@
 
                 <!-- PASO 1 -->
                 <div id="paso1_datosPersonales">
-                    <h2>Datos personales</h2>
+                    <h2>Paso 1: datos personales</h2>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nNombre">Nombre completo</label>
@@ -96,7 +97,7 @@
 
                 <!-- PASO 2 -->
                 <div id="paso2_datosMedicos" hidden>
-                    <h2>Antecedentes médicos y estéticos</h2>
+                    <h2>Paso 2: antecedentes médicos y estéticos</h2>
 
                     <div class="form-group">
                         <label for="nAlergias">Alergias (medicamentos, cosméticos, etc.)</label>
@@ -163,7 +164,7 @@
 
                     <div class="fila-botones">
                         <button type="button" class="btn-cancelar" id="btnVolverPaso1">⬅ Volver</button>
-                        <button type="submit" class="btn-primary btn-grow" id="btnGuardarNuevo">GUARDAR Y ABRIR FICHA</button>
+                        <button type="submit" class="btn-primary btn-grow" id="btnGuardarNuevo">GUARDAR CLIENTE</button>
                     </div>
                 </div>
 
@@ -177,6 +178,42 @@
                     <input type="search" id="filtroLista" placeholder="Filtrar por nombre o RUT" autocomplete="off">
                 </div>
                 <div id="listaClientes" class="lista-clientes"></div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA: AGENDA (calendario de citas) -->
+        <section class="tab-content" id="tab-agenda" role="tabpanel" aria-labelledby="btn-agenda">
+            <div class="agenda-barra">
+                <div class="agenda-nav">
+                    <button type="button" class="btn-nav" id="btnMesAnt" aria-label="Mes anterior">‹</button>
+                    <h2 id="tituloMes" aria-live="polite"></h2>
+                    <button type="button" class="btn-nav" id="btnMesSig" aria-label="Mes siguiente">›</button>
+                    <button type="button" class="btn-cancelar" id="btnHoy">Hoy</button>
+                </div>
+                <button type="button" class="btn-primary btn-inline" id="btnNuevaCita">➕ Nueva cita</button>
+            </div>
+
+            <div class="error-msg" id="errorAgenda" role="alert" aria-live="polite"></div>
+
+            <div class="cal-grid" id="calGrid" role="group" aria-label="Calendario de citas"></div>
+            <div class="cal-leyenda" aria-hidden="true">
+                <span><i class="punto est-pendiente"></i> Pendiente</span>
+                <span><i class="punto est-confirmada"></i> Confirmada</span>
+                <span><i class="punto est-realizada"></i> Realizada</span>
+                <span class="cal-leyenda-ayuda">Haz clic en un día para ver sus citas. Doble clic para agendar.</span>
+            </div>
+
+            <div class="agenda-dia">
+                <div class="agenda-dia-cabecera">
+                    <h3 id="tituloDia"></h3>
+                    <button type="button" class="btn-ver" id="btnNuevaCitaDia">+ Agendar en este día</button>
+                </div>
+                <div id="listaDia"></div>
+            </div>
+
+            <div class="agenda-proximas">
+                <h3>Próximas citas</h3>
+                <div id="listaProximas"></div>
             </div>
         </section>
 
@@ -222,7 +259,7 @@
                 </div>
 
                 <div class="seccion-ficha">
-                    <h3>EVALUACIÓN DE LA SESIÓN</h3>
+                    <h3>2. EVALUACIÓN DE LA SESIÓN</h3>
                     <div class="form-group-inline">
                         <label for="diagTipoPiel">Tipo de piel observada hoy:</label>
                         <select id="diagTipoPiel" class="input-print">
@@ -250,7 +287,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ELIMINAR ATENCIÓN -->    <!-- FICHA ESTÉTICA (diagnóstico facial ANESI) -->
+    <!-- FICHA ESTÉTICA (diagnóstico facial ANESI) -->
     <div class="vista-ficha" id="vistaFichaEstetica">
         <div class="ficha-papel">
             <div class="ficha-header-print">
@@ -447,6 +484,72 @@
             </div>
         </div>
     </div>
+
+    <!-- MODAL: NUEVA / EDITAR CITA -->
+    <div class="modal-overlay" id="modalCita">
+        <div class="modal-content modal-editar" role="dialog" aria-modal="true" aria-labelledby="tituloCita">
+            <h2 class="modal-titulo" id="tituloCita">📅 Nueva cita</h2>
+            <form id="formCita" autocomplete="off" novalidate>
+                <input type="hidden" id="citaId">
+                <input type="hidden" id="citaClienteRut">
+
+                <div class="form-group">
+                    <label for="citaClienteTxt">Cliente</label>
+                    <input type="text" id="citaClienteTxt" list="listaClientesCita" placeholder="Escribe para buscar un cliente registrado..." required>
+                    <datalist id="listaClientesCita"></datalist>
+                    <p class="nota-auto" id="citaClienteAviso"></p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="citaFecha">Fecha</label>
+                        <input type="date" id="citaFecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="citaHora">Hora</label>
+                        <input type="time" id="citaHora" step="300" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="citaDuracion">Duración</label>
+                        <select id="citaDuracion"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="citaEstado">Estado</label>
+                        <select id="citaEstado">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="realizada">Realizada</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="citaTipo">Tipo de cita</label>
+                    <input type="text" id="citaTipo" list="listaTiposCita" maxlength="100" placeholder="Ej: Limpieza facial">
+                    <datalist id="listaTiposCita"></datalist>
+                </div>
+
+                <div class="form-group">
+                    <label for="citaNotas">Notas</label>
+                    <textarea id="citaNotas" rows="3" maxlength="500" placeholder="Opcional"></textarea>
+                </div>
+
+                <div class="error-msg" id="errorCita" role="alert" aria-live="polite"></div>
+
+                <div class="modal-botones modal-botones-cita">
+                    <button type="button" class="btn-delete" id="btnEliminarCita" hidden>Eliminar cita</button>
+                    <button type="button" class="btn-cancelar" id="btnCancelarCita">Cancelar</button>
+                    <button type="submit" class="btn-primary btn-inline btn-grow" id="btnGuardarCita">Guardar cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ELIMINAR ATENCIÓN -->
     <div class="modal-overlay" id="modalEliminar">
         <div class="modal-content modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modalEliminarTitle" aria-describedby="modalEliminarText">
             <h2 class="modal-titulo" id="modalEliminarTitle">⚠️ Eliminar diagnóstico</h2>
@@ -461,4 +564,4 @@
 
     <script type="module" src="js/panel.js"></script>
 </body>
-</html>
+</html>s
