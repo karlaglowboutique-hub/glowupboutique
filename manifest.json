@@ -1,0 +1,17 @@
+{
+  "name": "Glow Up Boutique",
+  "short_name": "Glow Up",
+  "description": "Panel de administración de Glow Up Boutique: clientes, fichas estéticas y agenda.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "imagenes/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "imagenes/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "imagenes/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
