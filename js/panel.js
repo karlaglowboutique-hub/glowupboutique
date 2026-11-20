@@ -9,6 +9,7 @@ import {
     nuevoId, mensajeErrorFirestore
 } from "./utils.js";
 import { abrirFichaEstetica } from "./ficha-estetica.js";
+import { iniciarAgenda, actualizarClientesAgenda, abrirNuevaCita, htmlProximasCitas } from "./agenda.js";
 
 const usuario = await requerirSesion();
 
@@ -25,10 +26,19 @@ const modal = $("modalEliminar");
 
 let clientes = {};            // copia en vivo de Firestore
 let rutFichaActual = null;    // cliente que se ve en la pestaña "Buscar"
-let pendienteAbrir = null;    // RUT recién creado: al llegar a la caché se ofrece la ficha estética
+let pendienteAbrir = null;    // RUT recién creado: al llegar a la caché se abre su ficha
 let soloLectura = false;
 let formModificado = false;
 let eliminacion = null;       // { rut, id }
+
+// ---------------------------------------------------------------
+// Agenda (calendario de citas)
+// ---------------------------------------------------------------
+iniciarAgenda({
+    alCambiar: () => { // si hay una ficha de cliente a la vista, actualiza sus "Próximas citas"
+        if (rutFichaActual && clientes[rutFichaActual]) mostrarFichaCliente(clientes[rutFichaActual]);
+    }
+});
 
 // ---------------------------------------------------------------
 // Datos en vivo
@@ -39,6 +49,7 @@ onSnapshot(
         const nuevo = {};
         snap.forEach((d) => { nuevo[d.id] = { ...d.data(), rut: d.id }; });
         clientes = nuevo;
+        actualizarClientesAgenda(clientes);
         renderListaClientes();
 
         if (pendienteAbrir && clientes[pendienteAbrir]) {
@@ -195,7 +206,7 @@ formNuevo.addEventListener("submit", async (e) => {
         activarTab("buscar");
         $("buscarRut").value = formatearRut(clave);
         $("errorBuscar").textContent = "";
-        pendienteAbrir = clave;                // se ofrecerá la ficha estética apenas llegue a la caché
+        pendienteAbrir = clave;                // se abrirá la ficha apenas llegue a la caché
         if (clientes[clave]) {                 // por si ya llegó
             const rut = pendienteAbrir; pendienteAbrir = null;
             rutFichaActual = rut;
@@ -319,6 +330,7 @@ function mostrarFichaCliente(c) {
                     <p>RUT: ${esc(formatearRut(c.rut))}</p>
                 </div>
                 <div class="ficha-acciones-header">
+                    <button type="button" class="btn-primary btn-inline" data-accion="agendar">📅 Agendar cita</button>
                     <button type="button" class="btn-primary btn-inline" data-accion="nuevo">➕ Nuevo diagnóstico</button>
                 </div>
             </div>
@@ -341,6 +353,9 @@ function mostrarFichaCliente(c) {
                 ${item("Cirugías previas", c.cirugias)}
             </div>
             ${seccionFE}
+
+            <h4>Próximas citas</h4>
+            ${htmlProximasCitas(c.rut)}
         </div>
 
         <div class="historial-container">
@@ -353,7 +368,8 @@ contenedorFicha.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-accion]");
     if (!btn || !rutFichaActual) return;
     const { accion, id } = btn.dataset;
-    if (accion === "nuevo") abrirFichaAnesi(rutFichaActual, null, false);
+    if (accion === "agendar") abrirNuevaCita({ rut: rutFichaActual });
+    else if (accion === "nuevo") abrirFichaAnesi(rutFichaActual, null, false);
     else if (accion === "ver") abrirFichaAnesi(rutFichaActual, id, true);
     else if (accion === "editar") abrirFichaAnesi(rutFichaActual, id, false);
     else if (accion === "eliminar") abrirModalEliminar(rutFichaActual, id);
