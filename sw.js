@@ -1,7 +1,9 @@
 // ===== SERVICE WORKER: Glow Up Boutique =====
 // Guarda en el dispositivo SOLO los archivos de la aplicación (pantallas, estilos y código).
 // NUNCA guarda datos de clientes: esos viajan directo a Firebase y no pasan por esta caché.
-const VERSION = "glowup-v3";
+// Actualización automática: siempre pregunta primero a internet por la versión más nueva (GitHub);
+// la copia guardada solo se usa cuando no hay conexión.
+const VERSION = "glowup-v4";
 const ARCHIVOS = [
     "./", "index.html", "panel.html", "programador.html", "privacidad.html",
     "styles.css", "manifest.json",
@@ -14,8 +16,8 @@ const ARCHIVOS = [
 self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(VERSION).then((cache) =>
-            // Uno por uno: si falta un archivo (por ejemplo el logo), los demás se guardan igual
-            Promise.allSettled(ARCHIVOS.map((a) => cache.add(a)))
+            // Uno por uno: si falta un archivo, los demás se guardan igual
+            Promise.allSettled(ARCHIVOS.map((a) => cache.add(new Request(a, { cache: "reload" }))))
         ).then(() => self.skipWaiting())
     );
 });
@@ -34,9 +36,10 @@ self.addEventListener("fetch", (event) => {
     const url = new URL(req.url);
     if (url.origin !== self.location.origin) return; // Firebase, Google, etc.: nunca se interceptan
 
-    // Primero la red (así siempre ves la última versión que subas a GitHub); sin internet, usa la copia guardada
+    // "no-cache" = siempre confirma con el servidor si hay una versión nueva (GitHub Pages guarda 10 minutos
+    // por su cuenta; así evitamos esa espera). Si no hay internet, usa la copia guardada.
     event.respondWith(
-        fetch(req)
+        fetch(req, { cache: "no-cache" })
             .then((resp) => {
                 if (resp && resp.ok) {
                     const copia = resp.clone();
