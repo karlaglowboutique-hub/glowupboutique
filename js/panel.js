@@ -10,6 +10,7 @@ import {
 } from "./utils.js";
 import { abrirFichaEstetica } from "./ficha-estetica.js";
 import { iniciarAgenda, actualizarClientesAgenda, abrirNuevaCita, htmlProximasCitas } from "./agenda.js";
+import { htmlFotos, hidratarFotos, abrirSubirFotos, abrirVisor, abrirComparar } from "./fotos.js";
 
 const usuario = await requerirSesion();
 
@@ -356,12 +357,15 @@ function mostrarFichaCliente(c) {
 
             <h4>Próximas citas</h4>
             ${htmlProximasCitas(c.rut)}
+
+            ${htmlFotos(c)}
         </div>
 
         <div class="historial-container">
             <h4>Historial de atenciones</h4>
             ${historial}
         </div>`;
+    hidratarFotos(contenedorFicha); // carga las miniaturas de las fotos
 }
 
 contenedorFicha.addEventListener("click", (e) => {
@@ -375,6 +379,9 @@ contenedorFicha.addEventListener("click", (e) => {
     else if (accion === "eliminar") abrirModalEliminar(rutFichaActual, id);
     else if (accion === "fe-crear" || accion === "fe-editar") abrirFichaEstetica(clientes[rutFichaActual], "editar");
     else if (accion === "fe-ver") abrirFichaEstetica(clientes[rutFichaActual], "ver");
+    else if (accion === "fotos-subir") abrirSubirFotos(clientes[rutFichaActual]);
+    else if (accion === "fotos-comparar") abrirComparar(clientes[rutFichaActual]);
+    else if (accion === "foto-ver") abrirVisor(clientes[rutFichaActual], id);
 });
 
 // ---------------------------------------------------------------
