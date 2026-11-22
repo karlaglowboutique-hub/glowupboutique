@@ -4,6 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/fireba
 import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app-check.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAynA1pU1npXEN_HvXNxTC4Xn7QB_SWyWg",
@@ -30,6 +31,8 @@ if (RECAPTCHA_SITE_KEY) {
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app); // fotos de seguimiento
+
 
 // Colección donde están los clientes (cada documento = un RUT con guion, ej: "15699047-7")
 export const COLECCION = "clientes";
