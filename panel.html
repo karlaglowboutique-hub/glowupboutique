@@ -548,7 +548,94 @@
             </form>
         </div>
     </div>
+    <!-- MODAL: SUBIR FOTOS DE SEGUIMIENTO -->
+    <div class="modal-overlay" id="modalFotos">
+        <div class="modal-content modal-editar modal-fotos" role="dialog" aria-modal="true" aria-labelledby="tituloFotos">
+            <h2 class="modal-titulo" id="tituloFotos">📷 Subir fotos de seguimiento</h2>
+            <form id="formFotos" autocomplete="off" novalidate>
+                <p class="nota-auto" id="fotosClienteNombre"></p>
 
+                <div class="fila-botones fila-fotos">
+                    <button type="button" class="btn-primary btn-inline btn-grow" id="btnFotoCamara">📷 Tomar foto</button>
+                    <button type="button" class="btn-cancelar btn-grow" id="btnFotoGaleria">🖼️ Elegir de la galería</button>
+                </div>
+                <input type="file" id="fotoCamara" accept="image/*" capture="user" hidden>
+                <input type="file" id="fotoGaleria" accept="image/*" multiple hidden>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fotoFecha">Fecha de las fotos</label>
+                        <input type="date" id="fotoFecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fotoSesion">Sesión</label>
+                        <select id="fotoSesion"></select>
+                    </div>
+                </div>
+
+                <div id="listaPrevias" class="lista-previas"></div>
+
+                <label class="check-consentimiento" id="bloqueConsentimientoFotos" hidden>
+                    <input type="checkbox" id="fotoConsentimiento">
+                    <span>El cliente autoriza expresamente que se tomen y guarden fotografías de su rostro para llevar el registro de la evolución de su tratamiento. Puede pedir que se eliminen cuando quiera.</span>
+                </label>
+
+                <p class="nota-auto" id="fotosProgreso" role="status" aria-live="polite"></p>
+                <div class="error-msg" id="errorFotos" role="alert" aria-live="polite"></div>
+
+                <div class="modal-botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarFotos">Cancelar</button>
+                    <button type="submit" class="btn-primary btn-inline btn-grow" id="btnSubirFotos" disabled>Subir fotos</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: VER UNA FOTO -->
+    <div class="modal-overlay" id="modalVisor">
+        <div class="modal-content modal-visor" role="dialog" aria-modal="true" aria-labelledby="visorInfo">
+            <p class="visor-info" id="visorInfo"></p>
+            <p class="visor-nota" id="visorNota"></p>
+            <div class="visor-marco">
+                <img id="visorImg" alt="">
+            </div>
+            <div class="error-msg" id="visorError" role="alert"></div>
+            <div class="visor-nav">
+                <button type="button" class="btn-cancelar" id="btnVisorAnt" aria-label="Foto anterior">‹ Anterior</button>
+                <span id="visorPos"></span>
+                <button type="button" class="btn-cancelar" id="btnVisorSig" aria-label="Foto siguiente">Siguiente ›</button>
+            </div>
+            <div class="modal-botones modal-botones-cita">
+                <button type="button" class="btn-delete" id="btnVisorEliminar">Eliminar foto</button>
+                <button type="button" class="btn-primary btn-inline btn-grow" id="btnVisorCerrar">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL: COMPARAR ANTES Y DESPUÉS -->
+    <div class="modal-overlay" id="modalComparar">
+        <div class="modal-content modal-comparar" role="dialog" aria-modal="true" aria-labelledby="tituloComparar">
+            <h2 class="modal-titulo" id="tituloComparar">↔ Comparar antes y después</h2>
+            <div class="comparar-grid">
+                <div class="comparar-col">
+                    <label for="compAntes">Antes</label>
+                    <select id="compAntes"></select>
+                    <div class="visor-marco"><img id="compImgAntes" alt=""></div>
+                    <p class="comparar-txt" id="compTxtAntes"></p>
+                </div>
+                <div class="comparar-col">
+                    <label for="compDespues">Después</label>
+                    <select id="compDespues"></select>
+                    <div class="visor-marco"><img id="compImgDespues" alt=""></div>
+                    <p class="comparar-txt" id="compTxtDespues"></p>
+                </div>
+            </div>
+            <div class="modal-botones">
+                <button type="button" class="btn-primary btn-inline btn-grow" id="btnCompararCerrar">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- MODAL: ELIMINAR ATENCIÓN -->
     <div class="modal-overlay" id="modalEliminar">
         <div class="modal-content modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modalEliminarTitle" aria-describedby="modalEliminarText">
