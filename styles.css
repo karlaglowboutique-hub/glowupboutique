@@ -456,3 +456,53 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
     .fotos-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
     .previa img { width: 64px; height: 86px; }
 }
+
+/* =========================================
+   FOTOS DE SEGUIMIENTO
+   ========================================= */
+.fotos-barra { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
+.nota-fotos { font-size: 13px; color: var(--gris); }
+.fotos-acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+.fotos-acciones .btn-primary { margin-bottom: 0; }
+
+.fotos-grupo { margin-bottom: 20px; }
+.fotos-grupo h5 { font-size: 13px; color: #333; margin-bottom: 10px; font-family: 'Segoe UI', Tahoma, sans-serif; letter-spacing: 0.5px; }
+.fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+.foto-thumb { position: relative; padding: 0; border: 2px solid #eee; border-radius: 8px; overflow: hidden; background: #f0f0f0; aspect-ratio: 3 / 4; cursor: pointer; display: block; }
+.foto-thumb:hover { border-color: var(--oro); }
+.foto-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.foto-thumb img.foto-error { visibility: hidden; }
+.foto-badge { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(17, 17, 17, 0.75); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: 0; text-transform: none; padding: 4px 6px; text-align: center; }
+
+/* Ventana para subir */
+.modal-fotos { max-width: 640px; }
+.fila-fotos { margin: 0 0 18px; }
+.fila-fotos .btn-primary { margin-bottom: 0; }
+.lista-previas { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+.previa { display: flex; gap: 12px; align-items: flex-start; border: 1px solid #eee; border-radius: 8px; padding: 10px; background: #fafafa; }
+.previa img { width: 78px; height: 104px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+.previa-campos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.previa-campos select, .previa-campos input { width: 100%; padding: 10px; border: 1px solid var(--borde); border-radius: 8px; font-size: 13px; font-family: inherit; background: #fff; }
+.previa-campos .btn-delete { align-self: flex-start; padding: 6px 12px; }
+
+/* Visor y comparación */
+.modal-visor { max-width: 760px; text-align: center; }
+.visor-info { font-weight: 700; color: var(--negro); font-size: 15px; }
+.visor-nota { color: var(--gris); font-size: 13px; min-height: 18px; margin: 4px 0 12px; }
+.visor-marco { background: #111; border-radius: 10px; min-height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.visor-marco img { max-width: 100%; max-height: 62vh; display: block; object-fit: contain; }
+.visor-nav { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; font-size: 13px; color: var(--gris); }
+.visor-nav .btn-cancelar { padding: 10px 16px; }
+
+.modal-comparar { max-width: 980px; }
+.comparar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.comparar-col label { display: block; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #444; margin-bottom: 6px; }
+.comparar-col select { width: 100%; padding: 10px; border: 1px solid var(--borde); border-radius: 8px; font-size: 13px; margin-bottom: 10px; background: #fff; }
+.comparar-col .visor-marco { min-height: 220px; }
+.comparar-txt { font-size: 12px; color: var(--gris); text-align: center; margin-top: 8px; }
+
+@media (max-width: 600px) {
+    .comparar-grid { grid-template-columns: 1fr; }
+    .fotos-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+    .previa img { width: 64px; height: 86px; }
+}
