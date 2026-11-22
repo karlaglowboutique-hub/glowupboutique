@@ -1,5 +1,5 @@
 // ===== PANEL DEL PROGRAMADOR (programador.html) =====
-import { auth, db, COLECCION } from "./firebase-init.js";
+import { auth, db, storage, COLECCION } from "./firebase-init.js";
 import { esProgramador, cerrarSesion, iniciarInactividad } from "./auth-guard.js";
 import {
     signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence
@@ -7,6 +7,7 @@ import {
 import {
     collection, doc, onSnapshot, deleteDoc, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { ref, deleteObject } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import {
     esc, validarRut, rutClave, formatearRut, mensajeErrorAuth, mensajeErrorFirestore
 } from "./utils.js";
@@ -217,7 +218,7 @@ function abrirModalEliminar(rut) {
     eliminacion = rut;
     $("modalEliminarError").textContent = "";
     $("modalEliminarText").textContent =
-        `¿Borrar a ${c.nombre || "este cliente"} (${formatearRut(rut)}) y sus ${Array.isArray(c.atenciones) ? c.atenciones.length : 0} atención(es) de forma permanente?`;
+        `¿Borrar a ${c.nombre || "este cliente"} (${formatearRut(rut)}) y sus ${Array.isArray(c.atenciones) ? c.atenciones.length : 0} atención(es) y ${Array.isArray(c.fotos) ? c.fotos.length : 0} foto(s) de forma permanente?`;
     modalEliminar.classList.add("active");
     $("btnCancelarEliminar").focus();
 }
@@ -234,6 +235,18 @@ $("btnConfirmarEliminar").addEventListener("click", async () => {
     const btn = $("btnConfirmarEliminar");
     btn.disabled = true;
     try {
+        // Primero se borran las fotos del cliente (si quedaran archivos sueltos, seguirían almacenados)
+        const c = clientes[eliminacion];
+        const rutas = [];
+        (Array.isArray(c && c.fotos) ? c.fotos : []).forEach((f) => { if (f.ruta) rutas.push(f.ruta); if (f.rutaMini) rutas.push(f.rutaMini); });
+        const fallidas = [];
+        for (const p of rutas) {
+            try { await deleteObject(ref(storage, p)); }
+            catch (e) { if (!(e && e.code === "storage/object-not-found")) fallidas.push(p); }
+        }
+        if (fallidas.length) {
+            throw new Error(`No se pudieron borrar ${fallidas.length} archivo(s) de fotos. No se borró el cliente para no dejar fotos sueltas. Revisa las reglas de Storage.`);
+        }
         await deleteDoc(doc(db, COLECCION, eliminacion));
         cerrarModalEliminar();
     } catch (err) {
