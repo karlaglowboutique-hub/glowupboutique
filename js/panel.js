@@ -11,6 +11,7 @@ import {
 import { abrirFichaEstetica } from "./ficha-estetica.js";
 import { iniciarAgenda, actualizarClientesAgenda, abrirNuevaCita, htmlProximasCitas } from "./agenda.js";
 import { htmlFotos, hidratarFotos, abrirSubirFotos, abrirVisor, abrirComparar } from "./fotos.js";
+import { iniciarAvisos } from "./avisos.js";
 
 const usuario = await requerirSesion();
 
@@ -40,6 +41,9 @@ iniciarAgenda({
         if (rutFichaActual && clientes[rutFichaActual]) mostrarFichaCliente(clientes[rutFichaActual]);
     }
 });
+
+// Avisos de citas (notificaciones en este dispositivo)
+iniciarAvisos();
 
 // ---------------------------------------------------------------
 // Datos en vivo
