@@ -18,8 +18,8 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 // ---------------------------------------------------------------
-// App Check (OPCIONAL). Déjalo vacío hasta que registres la app en App Check
-// y obtengas la "clave del sitio" de reCAPTCHA.
+// App Check (OPCIONAL, ver GUIA-PASO-A-PASO.md, paso 9).
+// Déjalo vacío hasta que registres la app en App Check y obtengas la "clave del sitio" de reCAPTCHA.
 // ---------------------------------------------------------------
 const RECAPTCHA_SITE_KEY = "";
 if (RECAPTCHA_SITE_KEY) {
@@ -33,14 +33,17 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app); // fotos de seguimiento
 
-
 // Colección donde están los clientes (cada documento = un RUT con guion, ej: "15699047-7")
 export const COLECCION = "clientes";
 
 // UID de Diego (programador). Cópialo desde Firebase > Authentication > Usuarios (botón copiar).
 // NO lo escribas a mano: la "I" mayúscula, la "l" minúscula y el "1" se confunden.
 // Es solo para mostrar u ocultar el panel; la protección real está en las reglas de Firestore.
-export const PROGRAMADOR_UID = "EI9k5YcMkoRksWIOBj0c26PT7zQ2";
+export const PROGRAMADOR_UID = "PEGA_AQUI_EL_UID_DE_DIEGO";
+
+// Clave pública para los avisos (notificaciones). Se obtiene en Firebase > Configuración del proyecto >
+// Cloud Messaging > "Certificados push web" > Generar par de claves. Pega aquí la clave que empieza con "B...".
+export const VAPID_KEY = "BNa4WwKtW8UgSDitNe0j7mJxE_cFzNMyb_rb9l9rp3blZpJwMmZMBHFWYqpir0zuFON992zKf4W6aO-67dCcs0E";
 
 // Minutos de inactividad antes de cerrar la sesión automáticamente.
 export const MINUTOS_INACTIVIDAD = 20;
