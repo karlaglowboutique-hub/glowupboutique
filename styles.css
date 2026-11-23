@@ -12,8 +12,7 @@
     --borde: #ddd;
 }
 
-/* CAMBIO 1: Se eliminó el !important para permitir que JS lo sobreescriba */
-[hidden] { display: none; }
+[hidden] { display: none !important; }
 
 * {
     margin: 0;
@@ -482,18 +481,3 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 .avisos-minutos select { padding: 8px 10px; border: 1px solid var(--borde); border-radius: 8px; font-size: 13px; background: #fff; }
 .avisos-card .nota-auto { margin: 12px 0 0; }
 .avisos-card .nota-auto:empty { display: none; }
-
-/* =========================================
-   CAMBIO 2: CORRECCIÓN DE VISIBILIDAD Y ALTURA
-   ========================================= */
-.check-consentimiento, 
-.aviso-hoy, 
-.avisos-card {
-    min-height: 50px;
-    overflow: hidden; /* Evita el colapso de altura */
-}
-
-.aviso-hoy[hidden], 
-.avisos-card[hidden] {
-    display: flex !important; /* Fuerza a mostrarse aunque tengan el atributo hidden */
-}
