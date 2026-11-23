@@ -506,3 +506,28 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
     .fotos-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
     .previa img { width: 64px; height: 86px; }
 }
+/* =========================================
+   AVISOS DE CITAS
+   ========================================= */
+.aviso-hoy { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: #fffdf5; border: 1px solid var(--oro); border-left: 5px solid var(--oro); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; font-size: 14px; color: #333; }
+.aviso-hoy.urgente { background: #fff3cd; border-color: #c79100; border-left-color: #c79100; color: #4a3600; font-weight: 600; }
+.aviso-hoy .btn-ver { padding: 8px 16px; }
+
+.tab-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 6px; margin-left: 6px; border-radius: 10px; background: var(--oro); color: var(--negro); font-size: 11px; font-weight: 700; letter-spacing: 0; }
+
+.avisos-card { background: #fafafa; border: 1px solid #eee; border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; }
+.avisos-cab { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.avisos-cab strong { display: block; color: var(--negro); font-size: 15px; }
+.avisos-estado { display: block; font-size: 12px; color: var(--gris); margin-top: 3px; }
+.avisos-estado.ok { color: var(--verde); font-weight: 600; }
+.avisos-estado.mal { color: var(--rojo); font-weight: 600; }
+.avisos-acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+.avisos-acciones .btn-primary, .avisos-acciones .btn-cancelar { margin-bottom: 0; padding: 12px 20px; }
+.avisos-opciones { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed #ddd; }
+.avisos-check { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #333; cursor: pointer; }
+.avisos-check input { accent-color: var(--oro); width: 16px; height: 16px; }
+.avisos-minutos { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #333; flex-wrap: wrap; }
+.avisos-minutos select { padding: 8px 10px; border: 1px solid var(--borde); border-radius: 8px; font-size: 13px; background: #fff; }
+.avisos-card .nota-auto { margin: 12px 0 0; }
+.avisos-card .nota-auto:empty { display: none; }
+
