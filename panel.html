@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel clínico - Glow Up Boutique</title>
     <link rel="icon" type="image/png" href="imagenes/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#111111">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Glow Up">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png">
+    <script src="js/pwa.js" defer></script>
     <link rel="stylesheet" href="styles.css">
     <script>
         // Si algo falla al cargar, muestra el error en pantalla en vez de dejarla negra
@@ -45,6 +53,12 @@
             <button type="button" class="tab-btn active" role="tab" id="btn-buscar" aria-selected="true" aria-controls="tab-buscar" data-tab="buscar">Buscar cliente</button>
             <button type="button" class="tab-btn" role="tab" id="btn-nuevo" aria-selected="false" aria-controls="tab-nuevo" data-tab="nuevo">Ingresar cliente nuevo</button>
             <button type="button" class="tab-btn" role="tab" id="btn-agenda" aria-selected="false" aria-controls="tab-agenda" data-tab="agenda">Agenda</button>
+        </div>
+
+        <!-- AVISO: citas de hoy (se ve en todas las pestañas) -->
+        <div class="aviso-hoy" id="avisoHoy" role="status" hidden>
+            <span id="avisoHoyTexto"></span>
+            <button type="button" class="btn-ver" id="btnAvisoHoyVer">Ver agenda</button>
         </div>
 
         <!-- PESTAÑA: BUSCAR CLIENTE -->
@@ -191,6 +205,34 @@
                     <button type="button" class="btn-cancelar" id="btnHoy">Hoy</button>
                 </div>
                 <button type="button" class="btn-primary btn-inline" id="btnNuevaCita">➕ Nueva cita</button>
+            </div>
+
+            <div class="avisos-card" id="avisosCard">
+                <div class="avisos-cab">
+                    <div>
+                        <strong>🔔 Avisos de mis citas</strong>
+                        <span id="avisosEstado" class="avisos-estado"></span>
+                    </div>
+                    <div class="avisos-acciones">
+                        <button type="button" class="btn-primary btn-inline" id="btnAvisosActivar">Activar avisos</button>
+                        <button type="button" class="btn-cancelar" id="btnAvisosProbar" hidden>Probar</button>
+                    </div>
+                </div>
+                <div class="avisos-opciones" id="avisosOpciones" hidden>
+                    <label class="avisos-check"><input type="checkbox" id="avisoRecordatorios" checked> Recordatorio antes de cada cita</label>
+                    <div class="avisos-minutos">
+                        <label for="avisoMinutos">Avisarme</label>
+                        <select id="avisoMinutos">
+                            <option value="10">10 minutos antes</option>
+                            <option value="15">15 minutos antes</option>
+                            <option value="30" selected>30 minutos antes</option>
+                            <option value="60">1 hora antes</option>
+                            <option value="120">2 horas antes</option>
+                        </select>
+                    </div>
+                    <label class="avisos-check"><input type="checkbox" id="avisoResumen" checked> Resumen cada mañana a las 8:00 (“Hoy tienes N citas”)</label>
+                </div>
+                <p class="nota-auto" id="avisosAyuda" role="status" aria-live="polite"></p>
             </div>
 
             <div class="error-msg" id="errorAgenda" role="alert" aria-live="polite"></div>
@@ -548,7 +590,7 @@
             </form>
         </div>
     </div>
-    
+
     <!-- MODAL: SUBIR FOTOS DE SEGUIMIENTO -->
     <div class="modal-overlay" id="modalFotos">
         <div class="modal-content modal-editar modal-fotos" role="dialog" aria-modal="true" aria-labelledby="tituloFotos">
@@ -612,7 +654,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- MODAL: COMPARAR ANTES Y DESPUÉS -->
     <div class="modal-overlay" id="modalComparar">
         <div class="modal-content modal-comparar" role="dialog" aria-modal="true" aria-labelledby="tituloComparar">
@@ -636,7 +678,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- MODAL: ELIMINAR ATENCIÓN -->
     <div class="modal-overlay" id="modalEliminar">
         <div class="modal-content modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modalEliminarTitle" aria-describedby="modalEliminarText">
@@ -652,4 +694,4 @@
 
     <script type="module" src="js/panel.js"></script>
 </body>
-</html>s
+</html>
