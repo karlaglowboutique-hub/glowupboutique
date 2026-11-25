@@ -3,16 +3,18 @@
    ========================================= */
 :root {
     --negro: #111;
-    --oro: #d4af37;          /* para bordes y para texto sobre fondo oscuro */
-    --oro-texto: #8a6a00;    /* oro oscuro: texto sobre fondo claro (contraste AA) */
+    --oro: #d4af37;
+    --oro-texto: #8a6a00;
     --rojo: #c62828;
     --rojo-osc: #b71c1c;
     --verde: #2e7d32;
-    --gris: #666;            /* texto secundario (contraste AA sobre blanco) */
+    --gris: #666;
     --borde: #ddd;
 }
 
 [hidden] { display: none !important; }
+
+/* Forzamos al consentimiento a mostrarse si el JS le quitó el hidden */
 #bloqueConsentimientoFotos:not([hidden]) { display: flex !important; }
 
 * {
@@ -33,7 +35,6 @@ body {
     color: #333;
 }
 
-/* Evita ver el panel un instante antes de que Firebase confirme la sesión */
 body.cargando .panel { visibility: hidden; }
 
 h1, h2, h3, h4 { font-family: 'Times New Roman', Times, serif; }
@@ -92,7 +93,7 @@ h1, h2, h3, h4 { font-family: 'Times New Roman', Times, serif; }
 .tab-content h2 { color: var(--negro); font-size: 18px; margin-bottom: 20px; }
 
 /* =========================================
-   BOTONES (sin !important: se usan clases modificadoras)
+   BOTONES
    ========================================= */
 button { transition: all 0.3s ease; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; cursor: pointer; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
 button:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -151,7 +152,6 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 .ficha-item strong { color: #222; font-size: 15px; overflow-wrap: anywhere; }
 .ficha-full { grid-column: 1 / -1; }
 
-/* Historial */
 .historial-container { margin-top: 30px; }
 .historial-container h4 { color: var(--negro); font-size: 15px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--oro); padding-bottom: 10px; margin-bottom: 18px; display: inline-block; }
 .atencion-card { background: #fff; border: 1px solid #eee; border-left: 4px solid var(--oro); border-radius: 8px; padding: 18px 20px; margin-bottom: 12px; }
@@ -164,7 +164,7 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 .card-acciones { display: flex; gap: 10px; margin-top: 14px; justify-content: flex-end; flex-wrap: wrap; border-top: 1px dashed #eee; padding-top: 12px; }
 
 /* =========================================
-   VISTA FICHA COMPLETA (DIAGNÓSTICO)
+   VISTA FICHA COMPLETA
    ========================================= */
 .vista-ficha { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 1000; overflow-y: auto; padding: 40px 15px; }
 .vista-ficha.active { display: block; }
@@ -266,7 +266,7 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 }
 
 /* =========================================
-   IMPRESIÓN (ficha de diagnóstico)
+   IMPRESIÓN
    ========================================= */
 @media print {
     body { background: #fff; padding: 0; display: block; }
@@ -277,7 +277,7 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 }
 
 /* =========================================
-   FICHA ESTÉTICA (diagnóstico facial ANESI)
+   FICHA ESTÉTICA
    ========================================= */
 .subtitulo-ficha { font-size: 13px; color: var(--gris); font-style: italic; }
 .seccion-ficha h3 small { font-size: 11px; font-weight: 600; color: var(--gris); letter-spacing: 0; text-transform: none; }
@@ -293,16 +293,13 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 .grid-checkboxes label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .checkbox-group input, .grid-checkboxes input, .chip-codigo input { accent-color: var(--oro); width: 16px; height: 16px; }
 
-/* Códigos del rostro (leyenda de la hoja) */
 .codigos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 20px; margin-bottom: 20px; }
 .chip-codigo { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #333; cursor: pointer; padding: 6px 10px; border: 1px solid #eee; border-radius: 6px; background: #fafafa; }
 .chip-codigo strong { min-width: 28px; color: var(--oro-texto); }
 
-/* Estudios de seguimiento */
 .estudio-card { border-left: 3px solid var(--oro); padding-left: 18px; margin-bottom: 25px; }
 .estudio-card h4 { margin-top: 5px; }
 
-/* Resumen dentro de la ficha del cliente */
 .fe-resumen { display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; background: #fff; border: 1px solid #eee; border-left: 4px solid var(--oro); border-radius: 8px; padding: 16px 20px; }
 .fe-resumen-datos strong { display: block; color: var(--negro); font-size: 15px; }
 .fe-resumen-datos span { display: block; color: var(--gris); font-size: 12px; margin-top: 4px; }
@@ -324,7 +321,7 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 }
 
 /* =========================================
-   AGENDA (calendario de citas)
+   AGENDA
    ========================================= */
 .ficha-acciones-header { display: flex; gap: 10px; flex-wrap: wrap; }
 
@@ -357,14 +354,12 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 .cal-leyenda .punto.est-realizada { background: #888; }
 .cal-leyenda-ayuda { margin-left: auto; font-style: italic; }
 
-/* Estados */
 .est { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-style: normal; white-space: nowrap; }
 .est.est-pendiente { background: #fff3cd; color: #664d03; }
 .est.est-confirmada { background: #e8f5e9; color: #1b5e20; }
 .est.est-realizada { background: #eee; color: #444; }
 .est.est-cancelada { background: #ffebee; color: var(--rojo-osc); }
 
-/* Citas del día */
 .agenda-dia, .agenda-proximas { margin-top: 10px; }
 .agenda-dia h3, .agenda-proximas h3 { color: var(--negro); font-size: 17px; }
 .agenda-dia-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--oro); padding-bottom: 10px; margin-bottom: 15px; }
@@ -391,7 +386,6 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 .proxima-datos strong { color: #222; font-size: 14px; overflow-wrap: anywhere; }
 .proxima-datos span { color: var(--gris); font-size: 12px; }
 
-/* Resumen de citas dentro de la ficha del cliente */
 .citas-mini { display: flex; flex-direction: column; gap: 8px; }
 .cita-mini { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #fff; border: 1px solid #eee; border-left: 3px solid var(--oro); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
 .cita-mini span { color: var(--gris); flex: 1; }
@@ -425,7 +419,6 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 .foto-thumb img.foto-error { visibility: hidden; }
 .foto-badge { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(17, 17, 17, 0.75); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: 0; text-transform: none; padding: 4px 6px; text-align: center; }
 
-/* Ventana para subir */
 .modal-fotos { max-width: 640px; }
 .fila-fotos { margin: 0 0 18px; }
 .fila-fotos .btn-primary { margin-bottom: 0; }
@@ -436,7 +429,6 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 .previa-campos select, .previa-campos input { width: 100%; padding: 10px; border: 1px solid var(--borde); border-radius: 8px; font-size: 13px; font-family: inherit; background: #fff; }
 .previa-campos .btn-delete { align-self: flex-start; padding: 6px 12px; }
 
-/* Visor y comparación */
 .modal-visor { max-width: 760px; text-align: center; }
 .visor-info { font-weight: 700; color: var(--negro); font-size: 15px; }
 .visor-nota { color: var(--gris); font-size: 13px; min-height: 18px; margin: 4px 0 12px; }
