@@ -148,7 +148,18 @@ export function abrirSubirFotos(cliente) {
     $("fotoFecha").max = fechaHoyLocal();
     $("fotoSesion").innerHTML = SESIONES.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
     $("fotoSesion").value = listaDe(cliente).length ? "Control" : SESIONES[0];
-    $("bloqueConsentimientoFotos").hidden = !!cliente.consentimientoFotos;
+    
+    // Corrección: forzar el consentimiento a mostrarse si no existe previamente
+    const bloqueConsent = $("bloqueConsentimientoFotos");
+    if (cliente.consentimientoFotos) {
+        bloqueConsent.hidden = true;
+        bloqueConsent.style.display = "none";
+    } else {
+        bloqueConsent.hidden = false;
+        bloqueConsent.removeAttribute("hidden");
+        bloqueConsent.style.display = "flex";
+    }
+
     renderPrevias();
     abrirModalFotos();
 }
