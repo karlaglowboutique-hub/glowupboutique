@@ -13,6 +13,8 @@
 }
 
 [hidden] { display: none !important; }
+#bloqueConsentimientoFotos[hidden] { display: none !important; }
+#bloqueConsentimientoFotos:not([hidden]) { display: flex !important; }
 
 * {
     margin: 0;
@@ -282,6 +284,7 @@ textarea.input-print { resize: vertical; min-height: 90px; border: 1px solid var
 .seccion-ficha h3 small { font-size: 11px; font-weight: 600; color: var(--gris); letter-spacing: 0; text-transform: none; }
 
 .nota-auto { font-size: 12px; color: var(--gris); background: #faf6e6; border-left: 3px solid var(--oro); padding: 10px 14px; border-radius: 6px; margin-bottom: 18px; line-height: 1.5; }
+.nota-auto:empty { display: none; }
 
 .form-group-inline .etiqueta { width: 260px; flex-shrink: 0; color: #555; margin-top: 8px; font-weight: 600; }
 
