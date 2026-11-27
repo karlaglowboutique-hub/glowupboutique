@@ -6,7 +6,7 @@ const ARCHIVOS = [
     "./", "index.html", "panel.html", "programador.html", "privacidad.html",
     "styles.css", "manifest.json",
     "js/pwa.js", "js/firebase-init.js", "js/utils.js", "js/auth-guard.js",
-    "js/login.js", "js/panel.js", "js/programador.js", "js/ficha-estetica.js", "js/agenda.js", "js/fotos.js",
+    "js/login.js", "js/panel.js", "js/programador.js", "js/ficha-estetica.js", "js/agenda.js", "js/fotos.js", "js/avisos.js"
     "imagenes/logo.png", "imagenes/logo-icono.png", "imagenes/logo-fondo-oscuro.png", "imagenes/icon-192.png", "imagenes/icon-512.png",
     "imagenes/icon-maskable-512.png", "imagenes/apple-touch-icon.png"
 ];
