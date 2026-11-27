@@ -1,14 +1,12 @@
 // ===== SERVICE WORKER: Glow Up Boutique =====
 // Guarda en el dispositivo SOLO los archivos de la aplicación (pantallas, estilos y código).
 // NUNCA guarda datos de clientes: esos viajan directo a Firebase y no pasan por esta caché.
-// Actualización automática: siempre pregunta primero a internet por la versión más nueva (GitHub);
-// la copia guardada solo se usa cuando no hay conexión.
-const VERSION = "glowup-v5";
+const VERSION = "glowup-v3";
 const ARCHIVOS = [
     "./", "index.html", "panel.html", "programador.html", "privacidad.html",
     "styles.css", "manifest.json",
     "js/pwa.js", "js/firebase-init.js", "js/utils.js", "js/auth-guard.js",
-    "js/login.js", "js/panel.js", "js/programador.js", "js/ficha-estetica.js", "js/agenda.js", "js/fotos.js", "js/avisos.js",
+    "js/login.js", "js/panel.js", "js/programador.js", "js/ficha-estetica.js", "js/agenda.js", "js/fotos.js",
     "imagenes/logo.png", "imagenes/logo-icono.png", "imagenes/logo-fondo-oscuro.png", "imagenes/icon-192.png", "imagenes/icon-512.png",
     "imagenes/icon-maskable-512.png", "imagenes/apple-touch-icon.png"
 ];
@@ -16,8 +14,8 @@ const ARCHIVOS = [
 self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(VERSION).then((cache) =>
-            // Uno por uno: si falta un archivo, los demás se guardan igual
-            Promise.allSettled(ARCHIVOS.map((a) => cache.add(new Request(a, { cache: "reload" }))))
+            // Uno por uno: si falta un archivo (por ejemplo el logo), los demás se guardan igual
+            Promise.allSettled(ARCHIVOS.map((a) => cache.add(a)))
         ).then(() => self.skipWaiting())
     );
 });
@@ -36,10 +34,9 @@ self.addEventListener("fetch", (event) => {
     const url = new URL(req.url);
     if (url.origin !== self.location.origin) return; // Firebase, Google, etc.: nunca se interceptan
 
-    // "no-cache" = siempre confirma con el servidor si hay una versión nueva (GitHub Pages guarda 10 minutos
-    // por su cuenta; así evitamos esa espera). Si no hay internet, usa la copia guardada.
+    // Primero la red (así siempre ves la última versión que subas a GitHub); sin internet, usa la copia guardada
     event.respondWith(
-        fetch(req, { cache: "no-cache" })
+        fetch(req)
             .then((resp) => {
                 if (resp && resp.ok) {
                     const copia = resp.clone();
@@ -59,38 +56,5 @@ self.addEventListener("fetch", (event) => {
                         : Response.error())
                 )
             )
-    );
-});
-
-// ---------------------------------------------------------------
-// Avisos (notificaciones push de las citas)
-// ---------------------------------------------------------------
-self.addEventListener("push", (event) => {
-    let p = {};
-    try { p = event.data ? event.data.json() : {}; } catch (e) { p = {}; }
-    const d = { ...(p.notification || {}), ...(p.data || {}) };
-    const titulo = d.titulo || d.title || "Glow Up Boutique";
-    const opciones = {
-        body: d.cuerpo || d.body || "",
-        icon: "imagenes/icon-192.png",
-        badge: "imagenes/icon-192.png",
-        data: { url: d.url || "panel.html" }
-    };
-    if (d.tag) { opciones.tag = d.tag; opciones.renotify = true; }
-    event.waitUntil(self.registration.showNotification(titulo, opciones));
-});
-
-self.addEventListener("notificationclick", (event) => {
-    event.notification.close();
-    const destino = new URL((event.notification.data && event.notification.data.url) || "panel.html", self.registration.scope).href;
-    event.waitUntil(
-        clients.matchAll({ type: "window", includeUncontrolled: true }).then((ventanas) => {
-            for (const v of ventanas) {
-                if (v.url.startsWith(self.registration.scope) && "focus" in v) {
-                    return v.focus().then(() => ("navigate" in v ? v.navigate(destino) : undefined));
-                }
-            }
-            return clients.openWindow(destino);
-        })
     );
 });
