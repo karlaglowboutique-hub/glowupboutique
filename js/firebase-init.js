@@ -41,9 +41,5 @@ export const COLECCION = "clientes";
 // Es solo para mostrar u ocultar el panel; la protección real está en las reglas de Firestore.
 export const PROGRAMADOR_UID = "PEGA_AQUI_EL_UID_DE_DIEGO";
 
-// Clave pública para los avisos (notificaciones). Se obtiene en Firebase > Configuración del proyecto >
-// Cloud Messaging > "Certificados push web" > Generar par de claves. Pega aquí la clave que empieza con "B...".
-export const VAPID_KEY = "BNa4WwKtW8UgSDitNe0j7mJxE_cFzNMyb_rb9l9rp3blZpJwMmZMBHFWYqpir0zuFON992zKf4W6aO-67dCcs0E";
-
 // Minutos de inactividad antes de cerrar la sesión automáticamente.
 export const MINUTOS_INACTIVIDAD = 20;
